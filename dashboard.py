@@ -54,7 +54,7 @@ div.stDownloadButton > button:first-child:hover {
   --teal-1:#AEC3B0;      /* light aqua */
   --teal-2:#64D2C4;      /* teal */
   --teal-3:#1F9E8C;      /* deep teal */
-  --teal-4:#0C5E59;      /* very deep teal */
+  --teal-4:#1F9E8C;      /* very deep teal */
   --glass: rgba(255,255,255,.06);
 }
 
@@ -126,7 +126,7 @@ hr{ border-color: rgba(255,255,255,.08); }
 
 /* ===== PANELS (Upload/Result/Statistics) ===== */
 .panel{
-  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);
+  background: linear-gradient(#1F9E8C, var(--bg-2) 0%, var(--bg-3) 100%);
   border: 1px solid var(--glass);
   border-radius: 18px;
   padding: 16px;
@@ -319,7 +319,7 @@ elif page == "Image Detection":
                 ms = (time.time() - t0) * 1000
                 plotted = res[0].plot()  # numpy (BGR)
 
-                st.markdown("<div class='gold-frame'>", unsafe_allow_html=True)
+                st.markdown("<div class='aqua-frame'>", unsafe_allow_html=True)
                 st.image(plotted[..., ::-1], caption="Detection", use_container_width=True)  # BGR -> RGB
                 st.markdown("</div>", unsafe_allow_html=True)
 
