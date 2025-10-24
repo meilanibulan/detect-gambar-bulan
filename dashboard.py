@@ -88,7 +88,7 @@ hr{ border-color: rgba(255,255,255,.08); }
   border-color: rgba(100,210,196,.65) !important; color: var(--teal-1) !important;
 }
 .stButton > button:disabled{
-  background: linear-gradient(160deg, var(--teal-2) 0%, var(--teal-1) 70%) !important;
+  background: linear-gradient(160deg, #1f9e8c 30%, #2e3f8f 70%) !important;
   color:#0a1418 !important;
   border: 1px solid var(--teal-2) !important;
   box-shadow: 0 8px 24px rgba(31,158,140,.35) !important;
@@ -200,6 +200,87 @@ hr{ border-color: rgba(255,255,255,.08); }
 
 </style>
 """, unsafe_allow_html=True)
+# =========================
+# MODELS (cached)
+# =========================
+@st.cache_resource(show_spinner=True)
+def load_models():
+    yolo, clf = None, None
+    try:
+        yolo = YOLO(YOLO_PATH)
+    except Exception as e:
+        st.warning(f"YOLO model gagal dimuat: {e}")
+    try:
+        clf = tf.keras.models.load_model(CLF_PATH, compile=False)
+    except Exception as e:
+        st.warning(f"Classifier gagal dimuat: {e}")
+    return yolo, clf
+
+# =========================
+# NAVBAR
+# =========================
+def navbar(active: str):
+    labels = ["Home", "Image Detection", "Image Classification", "Statistics", "About Model", "How It Works"]
+    st.markdown("<div class='navbar'>", unsafe_allow_html=True)
+    cols = st.columns(len(labels), gap="small")
+    for i, lab in enumerate(labels):
+        with cols[i]:
+            if lab == active:
+                st.button(lab, disabled=True, key=f"nav_{lab}")
+            else:
+                if st.button(lab, key=f"nav_{lab}"):
+                    st.session_state["page"] = lab
+                    st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+
+navbar(st.session_state["page"])
+st.markdown("<div class='after-nav'></div>", unsafe_allow_html=True)
+
+# =========================
+# HELPERS
+# =========================
+def to_png_bytes(img_np_bgr) -> bytes:
+    """Convert Ultralytics plotted (BGR numpy) -> PNG bytes (no OpenCV)."""
+    rgb = img_np_bgr[..., ::-1]               # BGR -> RGB
+    pil = Image.fromarray(rgb.astype("uint8"))
+    buf = io.BytesIO(); pil.save(buf, format="PNG")
+    return buf.getvalue()
+
+def add_log(filename, mode, label, conf):
+    st.session_state["logs"].append({"file": filename, "mode": mode, "label": label, "confidence": float(conf)})
+    st.session_state["scores"].append(float(conf))
+
+def kpi_cards(inf_ms: float, det_total: int):
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown(f"<div class='card--peach'><h3>Available</h3><div class='big'>{det_total}</div><div class='pill'>Total detections</div></div>", unsafe_allow_html=True)
+    with c2:
+        acc = (np.mean(st.session_state["scores"])*100) if st.session_state["scores"] else 0.0
+        st.markdown(f"<div class='card--peach'><h3>Income</h3><div class='big'>{acc:.2f}%</div><div class='pill'>Session accuracy*</div></div>", unsafe_allow_html=True)
+    with c3:
+        st.markdown(f"<div class='card--peach'><h3>Expense</h3><div class='big'>{inf_ms:.1f} ms</div><div class='pill'>Inference time</div></div>", unsafe_allow_html=True)
+    st.caption("*Accuracy here = confidence proxy (max prob for classification, mean conf for detection).")
+
+def transactions_list():
+    st.markdown("### Transactions")
+    for r in reversed(st.session_state["logs"][-12:]):
+        color = "#A1E887" if r["confidence"] >= 0.5 else "#F98F8F"
+        st.markdown(
+            f"<div class='txn'><div style='display:flex; justify-content:space-between;'>"
+            f"<div><b>{r['file']}</b><div class='muted'>{r['mode']} → {r['label']}</div></div>"
+            f"<div style='font-weight:800; color:{color};'>{r['confidence']:.3f}</div></div></div>",
+            unsafe_allow_html=True
+        )
+
+def log_df() -> pd.DataFrame:
+    if not st.session_state["logs"]:
+        return pd.DataFrame(columns=["file","mode","label","confidence"])
+    return pd.DataFrame(st.session_state["logs"])
+
+# =========================
+# PAGES
+# =========================
+page = st.session_state["page"]
 
 if page == "Home":
     st.markdown("<h1>BULAN IMAGE DETECTION DASHBOARD 🌙</h1>", unsafe_allow_html=True)
