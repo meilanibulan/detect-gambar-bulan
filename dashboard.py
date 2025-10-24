@@ -178,6 +178,44 @@ if menu == "Image Detection":
                 st.write(f"🎯 **Objects detected:** {len(detected_objects)}")
             else:
                 st.warning("No objects detected.")
+elif menu == "Image Classification":
+    st.header("🖼️ Image Classification (CNN)")
+    st.write("Upload an image below to classify it using the CNN model.")
+
+    # Upload file
+    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
+
+    if uploaded_file:
+        # Tampilkan gambar yang diunggah
+        img = Image.open(uploaded_file)
+        st.image(img, caption="Uploaded Image", use_container_width=True)
+
+        # ==========================
+        # Preprocessing
+        # ==========================
+        img_resized = img.resize((224, 224))
+        img_array = image.img_to_array(img_resized)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array = img_array / 255.0  # Normalisasi
+
+        # ==========================
+        # Prediction
+        # ==========================
+        start_time = time.time()
+        prediction = classifier.predict(img_array)
+        inference_time = (time.time() - start_time) * 1000
+
+        # Ambil hasil prediksi tertinggi
+        class_index = np.argmax(prediction)
+        confidence = np.max(prediction) * 100
+
+        # ==========================
+        # Output ke Streamlit
+        # ==========================
+        st.success("✅ Classification complete!")
+        st.write(f"🎯 **Predicted Class:** {class_index}")
+        st.write(f"🔥 **Confidence:** {confidence:.2f}%")
+        st.write(f"⏱️ **Inference Time:** {inference_time:.2f} ms")
 
     # styling halus untuk background
     st.markdown("""
