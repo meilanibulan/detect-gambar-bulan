@@ -106,12 +106,6 @@ st.markdown("""
 .vspace-24{ height: 24px; }
 .vspace-32{ height: 32px; }
 
-/* Sidebar sedikit lebih lebar biar tidak mepet */
-[data-testid="stSidebar"]{
-  min-width: 260px; max-width: 260px;
-  padding: var(--sp-16) var(--sp-16) !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
