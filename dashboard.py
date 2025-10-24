@@ -31,114 +31,66 @@ if "det_count" not in st.session_state: st.session_state["det_count"] = 0
 
 st.markdown("""
 <style>
-/* =========================
-   THEME — BULAN DASHBOARD
-   ========================= */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+/* === COLOR PATCH (kontras + keterbacaan) === */
+
+/* 1) Token warna — lebih gelap di bg, lebih terang di teks & teal */
 :root{
-  --bg1:#0B121B;        /* background gradient start */
-  --bg2:#0F1824;        /* background gradient end   */
-  --panel:#0E3D41;      /* panel start               */
-  --panel2:#0F5C59;     /* panel end                 */
-  --accent:#30E3CA;     /* mint neon                 */
-  --accent-2:#19B9B0;   /* darker mint               */
-  --text:#EAFDFC;       /* main text                 */
-  --muted:#B9CDD3;      /* secondary text            */
-  --chip:rgba(255,255,255,0.10);
-  --glass:rgba(255,255,255,0.06);
-  --ring:rgba(48,227,202,0.55);
+  --bg-1:#081018;           /* lebih gelap */
+  --bg-2:#0A1520;
+  --bg-3:#0F2430;
+  --text:#F4FBFD;           /* teks utama lebih putih */
+  --muted:#C8D6DE;          /* teks sekunder lebih terang */
+  --teal-1:#C7FBF3;         /* mint terang */
+  --teal-2:#44E6D2;         /* aksen utama (lebih vivid) */
+  --teal-3:#14B9AE;         /* aksen sekunder */
+  --teal-4:#0E6E69;
+  --glass:rgba(255,255,255,.08);
 }
 
-/* ===== Base ===== */
-html, body, [class^="stApp"] * { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-.stApp { 
-  background: radial-gradient(1200px 600px at 15% 0%, #0E1622 0%, transparent 60%) , linear-gradient(180deg, var(--bg1), var(--bg2));
+/* 2) Nav pills — teks/ikon lebih jelas saat aktif & non-aktif */
+.stButton > button{
+  color: var(--text) !important;
+}
+.stButton > button:disabled{
+  background: linear-gradient(160deg, var(--teal-2) 0%, var(--teal-1) 70%) !important;
+  color:#092126 !important; /* kontras lebih tinggi */
 }
 
-/* ===== Headings & copy ===== */
-h1 { font-size: 3rem !important; letter-spacing: 1.2px; color: var(--text); text-shadow: 0 0 12px rgba(48,227,202,.35);}
-h2 { font-size: 1.65rem !important; color: var(--text);}
-h3, h4 { color: var(--text); }
-p, li, label, span, div { color: var(--muted); font-size: 1.05rem; }
-
-/* ===== Nav Tabs (st.tabs) ===== */
-.stTabs [data-baseweb="tab-list"] { gap: 12px; }
-.stTabs [data-baseweb="tab"] {
-  background: #0F1824; 
-  color: var(--text); 
-  border-radius: 999px; 
-  padding: 10px 18px; 
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+/* 3) KPI cards — border & isi lebih “pop” */
+.card--peach{
+  background: linear-gradient(135deg, rgba(31,158,140,.45) 0%, rgba(12,94,89,.40) 100%),
+              linear-gradient(180deg, #0d1a22 0%, #102632 100%);
+  border: 1px solid rgba(68,230,210,.55);
 }
-.stTabs [aria-selected="true"]{
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #0B2C2D !important;
-  font-weight: 700;
-  box-shadow: 0 0 12px var(--ring);
+.card--peach h3{ color:#FFFFFF; }
+.card--peach .big{ color:#FFFFFF; }
+.card--peach .pill{
+  background: rgba(199,251,243,.12);
+  color:#ECFFFD;
+  border:1px solid rgba(68,230,210,.55);
 }
 
-/* ===== KPI cards (gunakan st.container/card pembungkus) ===== */
-.bulan-card{
-  background: linear-gradient(145deg, var(--panel) 0%, var(--panel2) 100%);
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 20px; 
-  padding: 22px; 
+/* 4) Panel Upload/Result/Statistics — teks dan tepi lebih terang */
+.panel{
+  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);
+  border: 1px solid rgba(255,255,255,.12);
   color: var(--text);
-  box-shadow: 0 10px 30px rgba(0,0,0,.30);
-  transition: transform .15s ease, box-shadow .15s ease;
 }
-.bulan-card:hover{ transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,0,0,.36); }
-.bulan-chip{
-  display:inline-block; margin-top:10px; padding:8px 14px; border-radius:12px;
-  background: var(--chip); color: var(--text); border:1px solid rgba(255,255,255,.12); 
-  backdrop-filter: blur(4px);
-}
+.panel h3{ color:#FFFFFF; }
 
-/* Metric (kalau pakai st.metric) */
-[data-testid="stMetric"]{
-  background: linear-gradient(145deg, var(--panel), var(--panel2));
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 20px; padding: 18px 20px; color: var(--text);
-  box-shadow: 0 10px 30px rgba(0,0,0,.30);
+/* 5) File uploader — garis & teks terlihat jelas */
+[data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"]{
+  background: rgba(255,255,255,.06) !important;
+  border: 1.8px dashed var(--teal-2) !important;
 }
-[data-testid="stMetricValue"] { color: var(--text) !important; font-size: 2rem !important; font-weight: 800; }
-[data-testid="stMetricDelta"] { color: var(--accent) !important; }
-
-/* ===== Upload & Result panels ===== */
-.bulan-panel{
-  background: linear-gradient(145deg, var(--panel), var(--panel2));
-  border: 1px solid rgba(255,255,255,.10); border-radius: 18px;
-  padding: 24px; color: var(--text); box-shadow: 0 8px 24px rgba(0,0,0,.28);
+[data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"] *{
+  color:#F2FFFF !important;
+  opacity:1 !important;
 }
 
-/* File uploader dropzone */
-[data-testid="stFileUploaderDropzone"]{
-  border: 2px dashed var(--accent) !important;
-  background: var(--glass); color: var(--text) !important; border-radius: 14px;
-}
-[data-testid="stFileUploaderDropzone"] p{ color: var(--text) !important; }
-
-/* ===== Buttons ===== */
-.stButton>button, button[kind="secondary"]{
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color:#0B2C2D !important; font-weight:700; border:none; border-radius:12px; 
-  padding: 10px 16px; box-shadow: 0 8px 20px rgba(48,227,202,.25);
-}
-.stButton>button:hover, button[kind="secondary"]:hover{ filter: brightness(1.08); box-shadow: 0 10px 26px rgba(48,227,202,.35); }
-
-/* ===== Links & small accents ===== */
-a { color: var(--accent); font-weight:600; text-decoration:none; }
-a:hover { text-decoration: underline; }
-
-/* ===== Section dividers ===== */
-hr { border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent); }
-
-/* ===== Responsive tweaks ===== */
-@media (max-width: 900px){
-  h1{ font-size: 2.2rem !important; }
-  [data-testid="stMetricValue"]{ font-size: 1.6rem !important; }
-}
+/* 6) Divider & teks umum */
+hr{ border-color: rgba(255,255,255,.14) !important; }
+.muted, .stMarkdown p, .stMarkdown li{ color: var(--muted) !important; }
 </style>
 """, unsafe_allow_html=True)
 
