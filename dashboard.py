@@ -133,7 +133,7 @@ st.markdown("""
 # HOME PAGE
 # ==========================
 if menu == "Home":
-    st.markdown("# **WELCOME TO MY IMAGE DETECTION**🌙")
+    st.markdown("# **WELCOME TO IMAGE DETECTION WEBSITE**🫧")
     st.caption("#### Welcome to Bulandari's image detection website! Choose the features that best suit your needs.")
     st.markdown("<div class='black'>", unsafe_allow_html=True)
     st.markdown("#### **You can use this website to detect images by theme:**")
@@ -214,54 +214,44 @@ elif menu == "Image Detection":
         st.markdown("### 🧠 Detection Result")
 
         if f and run:
-            t0 = time.time()
+            t0 = time.time() 
             results = yolo_model(img)
-            t = (time.time() - t0) * 1000
+            t = (time.time()-t0)*1000
 
-            # Convert hasil plot YOLO ke RGB
             rimg = results[0].plot()
             rimg = cv2.cvtColor(rimg, cv2.COLOR_BGR2RGB)
-
             st.image(rimg, caption="Detected Objects", width=300)
+            st.write(f"⏱️ Inference Time: {t:.2f} ms")
 
-            # Ambil info deteksi (label dan confidence)
-            boxes = results[0].boxes
-            if boxes is not None and len(boxes) > 0:
-                labels = boxes.cls.cpu().numpy().astype(int)
-                confs = boxes.conf.cpu().numpy()
-                names = [results[0].names[i] for i in labels]
-                num_objs = len(names)
+            # ambil label objek yang terdeteksi
+            detected_objects = []
+            for box in results[0].boxes:
+            cls_id = int(box.cls)
+            label = results[0].names[cls_id]
+            detected_objects.append(label)
 
-                st.success("✅ Detection complete!")
-                st.write(f"📦 **Objects Detected:** {num_objs}")
-                for n, c in zip(names, confs):
-                    st.write(f"• {n} — {c*100:.2f}%")
+            num_objs = len(detected_objects)
+
+            # tampilkan di layar
+            if num_objs > 0:
+                st.write(f"🎯 **Objects Detected ({num_objs}):** {', '.join(detected_objects)}")
             else:
                 st.warning("No objects detected.")
-                num_objs = 0
 
-            st.write(f"⏱️ **Inference Time:** {t:.2f} ms")
-
-            # ==========================
-            # Logging ke session_state
-            # ==========================
-            if "hist" not in st.session_state:
-                st.session_state["hist"] = {"det": []}
-            if "log" not in st.session_state:
-                st.session_state["log"] = []
-
+            # simpan ke history dan log
             st.session_state["hist"]["det"].append({
                 "ts": time.time(),
                 "ms": float(t),
-                "objects": num_objs
+                "objects": detected_objects
             })
             st.session_state["log"].append({
                 "time": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "mode": "detection",
                 "file": getattr(f, "name", "-"),
-                "objects": num_objs,
+                "objects": detected_objects,
                 "ms": float(t)
             })
+
             
 # ==========================
 # IMAGE CLASSIFICATION
