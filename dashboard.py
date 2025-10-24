@@ -126,13 +126,13 @@ hr{ border-color: rgba(255,255,255,.08); }
 
 /* ===== PANELS (Upload/Result/Statistics) ===== */
 .panel{
-  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);
+  background: linear-gradient(180deg, var(--bg-2) 0%, #0c5e59 100%);
   border: 1px solid var(--glass);
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
 }
-.panel h3{ margin:0 0 .6rem 0; font-size:2rem; font-weight:800; }
+.panel h3{ margin:0 0 .6rem 0; font-size:1.6rem; font-weight:800; }
 
 /* ===== IMAGE FRAME (teal glass) ===== */
 .gold-frame{
