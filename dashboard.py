@@ -49,8 +49,8 @@ div.stDownloadButton > button:first-child:hover {
   --bg-1:#CEECE3;        /* base navy-dark */
   --bg-2:#0F2A1D;        /* panel dark */
   --bg-3:#122430;        /* panel lighter */
-  --text:#05808C;        /* primary text */
-  --muted:#05808C;       /* secondary text */
+  --text:#FFFFFF;        /* primary text */
+  --muted:#FFFFFF;       /* secondary text */
   --teal-1:#AEC3B0;      /* light aqua */
   --teal-2:#64D2C4;      /* teal */
   --teal-3:#1F9E8C;      /* deep teal */
