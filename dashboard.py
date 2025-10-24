@@ -198,7 +198,7 @@ elif menu == "Image Detection":
 
     with c1:
         st.markdown("### 📤 Upload Image")
-        f = st.file_uploader("Select an image (JPG/PNG)", type=["jpg", "jpeg", "png"])
+        f = st.file_uploader("Select an image (JPG/PNG)", type=["jpg", "jpeg", "png"], key="det")
 
         if f:
             img = Image.open(f)
@@ -210,22 +210,37 @@ elif menu == "Image Detection":
         st.markdown("### 🧠 Detection Result")
 
         if f and run:
-            # Jalankan YOLO
             t0 = time.time()
             results = yolo_model(img)
             t = (time.time() - t0) * 1000
 
-            # Konversi warna hasil (YOLO -> BGR ke RGB)
+            # Convert hasil plot YOLO ke RGB
             rimg = results[0].plot()
             rimg = cv2.cvtColor(rimg, cv2.COLOR_BGR2RGB)
 
             st.image(rimg, caption="Detected Objects", width=300)
-            st.write(f"⏱️ Inference Time: {t:.2f} ms")
 
-            # Hitung jumlah objek terdeteksi
-            num_objs = int(len(results[0].boxes)) if results and results[0].boxes is not None else 0
+            # Ambil info deteksi (label dan confidence)
+            boxes = results[0].boxes
+            if boxes is not None and len(boxes) > 0:
+                labels = boxes.cls.cpu().numpy().astype(int)
+                confs = boxes.conf.cpu().numpy()
+                names = [results[0].names[i] for i in labels]
+                num_objs = len(names)
 
-            # Simpan ke history dan log (pastikan session_state ada)
+                st.success("✅ Detection complete!")
+                st.write(f"📦 **Objects Detected:** {num_objs}")
+                for n, c in zip(names, confs):
+                    st.write(f"• {n} — {c*100:.2f}%")
+            else:
+                st.warning("No objects detected.")
+                num_objs = 0
+
+            st.write(f"⏱️ **Inference Time:** {t:.2f} ms")
+
+            # ==========================
+            # Logging ke session_state
+            # ==========================
             if "hist" not in st.session_state:
                 st.session_state["hist"] = {"det": []}
             if "log" not in st.session_state:
@@ -236,7 +251,6 @@ elif menu == "Image Detection":
                 "ms": float(t),
                 "objects": num_objs
             })
-
             st.session_state["log"].append({
                 "time": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "mode": "detection",
@@ -244,7 +258,7 @@ elif menu == "Image Detection":
                 "objects": num_objs,
                 "ms": float(t)
             })
-
+            
 # ==========================
 # IMAGE CLASSIFICATION
 # ==========================
