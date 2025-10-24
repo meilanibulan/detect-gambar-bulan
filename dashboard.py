@@ -53,7 +53,7 @@ st.markdown("""
 <style>
 /* --- SIDEBAR --- */
 [data-testid="stSidebar"]{
-  background: #a9def9!important;
+  background: #d9eff9 !important;
   border-right: 1px solid rgba(0,0,0,.06);
   width: 220px !important;
   min-width: 220px !important;
