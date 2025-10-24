@@ -226,9 +226,9 @@ elif menu == "Image Detection":
             # ambil label objek yang terdeteksi
             detected_objects = []
             for box in results[0].boxes:
-            cls_id = int(box.cls)
-            label = results[0].names[cls_id]
-            detected_objects.append(label)
+                cls_id = int(box.cls)
+                label = results[0].names[cls_id]
+                detected_objects.append(label)
 
             num_objs = len(detected_objects)
 
