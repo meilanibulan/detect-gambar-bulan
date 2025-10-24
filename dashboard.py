@@ -76,18 +76,14 @@ st.markdown("""
   color: #5a5a5a !important;
 }
 
-/* --- AREA UTAMA --- */
-.stApp {
-  background: #fffbe8;
-}
 .block-container{
-  background: linear-gradient(145deg,#ffe9e9 0%,#efe7ff 50%,#e8fff3 100%);
-  border-radius: 16px;
-  margin-top: 30px !important;
-  padding: 3rem 4rem !important;         /* isi halaman lebih lebar */
-  width: 100% !important;                /* full layar */
+  background: linear-gradient(180deg,#f7f5ff 0%,#fefaf3 100%) !important;
+  border-radius: 0 !important;         
+  margin-top: 0 !important;
+  padding: 3rem 4rem !important;
+  width: 100% !important;
   max-width: 100% !important;
-  min-height: 100vh !important;          /* biar tinggi memenuhi layar */
+  min-height: 100vh !important;         
   box-sizing: border-box;
 }
 
@@ -97,7 +93,7 @@ st.markdown("""
   border-radius:22px; padding:24px; text-align:center;
   box-shadow:0 6px 16px rgba(0,0,0,.08);
   transition:transform .15s ease, box-shadow .15s ease;
-  height: 220px;                         /* biar kotaknya seragam dan isi seimbang */
+  height: 220px;                     
 }
 .category-card:hover{
   transform:translateY(-3px);
@@ -209,6 +205,20 @@ elif menu == "Image Detection":
             rimg = cv2.cvtColor(rimg, cv2.COLOR_BGR2RGB)
             st.image(rimg, caption="Detected Objects", width=300)
             st.write(f"⏱️ Inference Time: {t:.2f} ms")
+            num_objs = int(len(results[0].boxes)) if results and results[0].boxes is not None else 0
+            # simpan ke history dan log
+            st.session_state["hist"]["det"].append({
+                "ts": time.time(),
+                "ms": float(t),
+                "objects": num_objs
+            })
+            st.session_state["log"].append({
+                "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "mode": "detection",
+                "file": getattr(f, "name", "-"),
+                "objects": num_objs,
+                "ms": float(t)
+            })
 
 # ==========================
 # IMAGE CLASSIFICATION
@@ -238,13 +248,81 @@ elif menu == "Image Classification":
             st.write(f"🎯 **Predicted:** {label}")
             st.write(f"🔥 **Confidence:** {conf:.2f}%")
             st.write(f"⏱️ **Inference Time:** {t:.2f} ms")
+            st.session_state["hist"]["cls"].append({
+                "ts": time.time(),
+                "ms": float(t),
+                "label": label,
+                "conf": float(conf)
+            })
+            st.session_state["log"].append({
+                "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "mode": "classification",
+                "file": getattr(f, "name", "-"),
+                "label": label,
+                "confidence": float(conf),
+                "ms": float(t)
+            })
 
 # ==========================
 # STATISTICS / DATASET / ABOUT
 # ==========================
 elif menu == "Statistics":
     st.header("📊 Statistics")
-    st.info("Here you can display detection/classification run stats per session.")
+
+    det_runs = st.session_state["hist"]["det"]
+    cls_runs = st.session_state["hist"]["cls"]
+
+    if not det_runs and not cls_runs:
+        st.info("Belum ada data. Jalankan *Image Detection* atau *Image Classification* terlebih dahulu.")
+    else:
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.metric("Total Detection Runs", len(det_runs))
+        with c2:
+            st.metric("Total Classification Runs", len(cls_runs))
+        with c3:
+            avg_ms = 0.0
+            if det_runs or cls_runs:
+                all_ms = [r["ms"] for r in det_runs] + [r["ms"] for r in cls_runs]
+                if all_ms:
+                    avg_ms = sum(all_ms) / len(all_ms)
+            st.metric("Avg Inference Time", f"{avg_ms:.1f} ms")
+
+        st.markdown("### ⏱️ Inference Time per Run")
+
+        # Detection chart
+        if det_runs:
+            df_det = pd.DataFrame({
+                "run": list(range(1, len(det_runs) + 1)),
+                "ms": [r["ms"] for r in det_runs],
+                "objects": [r["objects"] for r in det_runs],
+            }).set_index("run")
+            st.subheader("Detection")
+            st.line_chart(df_det[["ms"]], height=220, use_container_width=True)
+            st.caption("Jumlah objek per run: " + ", ".join(map(str, df_det["objects"].tolist())))
+        else:
+            st.info("Belum ada data Detection.")
+
+        # Classification chart
+        if cls_runs:
+            df_cls = pd.DataFrame({
+                "run": list(range(1, len(cls_runs) + 1)),
+                "ms": [r["ms"] for r in cls_runs],
+                "label": [r["label"] for r in cls_runs],
+                "confidence": [r["conf"] * 100 for r in cls_runs],  # persen
+            }).set_index("run")
+            st.subheader("Classification")
+            st.line_chart(df_cls[["ms"]], height=220, use_container_width=True)
+            st.caption("Label: " + ", ".join(df_cls["label"].tolist()))
+        else:
+            st.info("Belum ada data Classification.")
+
+        st.markdown("### 🧾 Session Log")
+        if st.session_state["log"]:
+            df_log = pd.DataFrame(st.session_state["log"])
+            st.dataframe(df_log, use_container_width=True, height=260)
+        else:
+            st.write("Log kosong.")
 
 elif menu == "About":
     st.header("🌙 Tentang Dashboard Ini")
