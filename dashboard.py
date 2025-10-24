@@ -10,7 +10,7 @@ import cv2
 # ==========================
 # PAGE CONFIG
 # ==========================
-st.set_page_config(page_title="✨ Bulan Image Detection Dashboard", layout="wide")
+st.set_page_config(page_title="Bulan Image Detection Dashboard", page_icon="🌙", layout="wide")
 
 # ==========================
 # LOAD MODELS (cached)
@@ -149,7 +149,6 @@ if menu == "Home":
          st.markdown("""
         <div class='category-card' style='background-color:#EDE2FF;'>
             <div class='cat-title'>Animal</div>
-            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
         </div>
         """, unsafe_allow_html=True)
@@ -158,7 +157,6 @@ if menu == "Home":
          st.markdown("""
         <div class='category-card' style='background-color:#FFD6E0;'>
             <div class='cat-title'>Fashion</div>
-            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png' />
         </div> <div class='vspace-32'></div>
         """, unsafe_allow_html=True)
@@ -167,7 +165,6 @@ if menu == "Home":
         st.markdown("""
         <div class='category-card' style='background-color:#FFF4CC;'>
             <div class='cat-title'>Food</div>
-            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png' />
         </div>
         """, unsafe_allow_html=True)
@@ -176,7 +173,6 @@ if menu == "Home":
         st.markdown("""
         <div class='category-card' style='background-color:#D9FCE3;'>
             <div class='cat-title'>Nature</div>
-            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png' />
         </div>
         """, unsafe_allow_html=True)
