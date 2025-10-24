@@ -46,6 +46,9 @@ st.markdown("""
   background: linear-gradient(180deg,#fff7ef 0%,#f6f0ff 100%) !important;
   border-right: 1px solid rgba(0,0,0,.06);
 }
+.block-container {
+    margin-top: 60px !important;
+}
 .stApp { background: #fffbe8; }
 .block-container{
   background: linear-gradient(145deg,#ffe9e9 0%,#efe7ff 50%,#e8fff3 100%);
@@ -56,22 +59,36 @@ st.markdown("""
   background:#fff; border:1px solid rgba(0,0,0,.06);
   border-radius:16px; padding:18px; box-shadow:0 8px 26px rgba(0,0,0,.08);
 }
-.category-card{
-  background:#fff; border:1px solid rgba(0,0,0,.06);
-  border-radius:18px; padding:16px; text-align:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-.category-card:hover{ transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.12); }
-.cat-pill{
-  display:inline-block; padding:6px 14px; border-radius:18px;
-  background:#f3f3f7; border:1px solid rgba(0,0,0,.06); margin-bottom:10px; font-weight:700;
-}
-.cat-img{ width:100%; height:130px; object-fit:cover; border-radius:12px; }
-.howto{
-  background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:12px;
-  padding:16px; box-shadow:0 6px 18px rgba(0,0,0,.06);
-}
+h1, h2, h3, h4, h5, h6, p {
+    color: #2c2c2c;
+    }
+    .category-card {
+        border-radius: 20px;
+        padding: 15px;
+        text-align: center;
+        color: black;
+        font-weight: 600;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+    .cat-title {
+        font-size: 16px;
+        background-color: #eee;
+        border-radius: 20px;
+        padding: 3px 15px;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+    .cat-img {
+        border-radius: 15px;
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -180,9 +197,7 @@ elif menu == "Image Classification":
 elif menu == "Statistics":
     st.header("📊 Statistics")
     st.info("Here you can display detection/classification run stats per session.")
-elif menu == "Dataset":
-    st.header("🗂 Dataset")
-    st.write("Describe or upload your dataset here.")
+
 elif menu == "About":
     st.header("🌙 About This Dashboard")
     st.write("""
