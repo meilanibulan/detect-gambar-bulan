@@ -19,9 +19,6 @@ LABELS   = ['animal', 'fashion', 'food', 'nature']
 YOLO_PATH = "model/Meilani Bulandari Hsb_Laporan 4.pt"
 CLF_PATH  = "model/Meilani Bulandari Hsb_Laporan 2.h5"
 
-classifier = None
-yolo_model = None
-
 # State init
 if "page" not in st.session_state:    st.session_state["page"]  = "Home"
 if "filter" not in st.session_state:  st.session_state["filter"] = "All"
