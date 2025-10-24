@@ -100,65 +100,61 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("<h1 class='main-title'>BULAN IMAGE DETECTION DASHBOARD 🌙</h1>", unsafe_allow_html=True)
-st.markdown(
-    "<p class='subtext'>This app performs <b>Image Detection</b> (YOLO) and <b>Image Classification</b> (CNN) for animal, fashion, food, and nature images.</p>",
-    unsafe_allow_html=True
+# ===== Header & Deskripsi =====
+st.markdown("<h1>BULAN IMAGE DETECTION DASHBOARD 🌙</h1>", unsafe_allow_html=True)
+st.write(
+    "This app performs **Image Detection (YOLO)** and **Image Classification (CNN)** "
+    "for **animal, fashion, food, and nature** images."
 )
 
-st.divider()
-
 # ==========================
-# Kartu Kategori
+# ROUTING BERDASARKAN MENU
 # ==========================
-col1, col2, col3, col4 = st.columns(4)
+if menu == "Home":
+    # ==========================
+    # Kartu Kategori
+    # ==========================
+    col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.markdown("""
-    <div class='category-card' style='background-color:#EDE2FF;'>
-        <div class='cat-title'>Animal</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
-    </div>
-    """, unsafe_allow_html=True)
+    with col1:
+        st.markdown("""
+        <div class='category-card' style='background-color:#EDE2FF;'>
+            <div class='cat-title'>Animal</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
+        </div>
+        """, unsafe_allow_html=True)
 
-with col2:
-    st.markdown("""
-    <div class='category-card' style='background-color:#FFD6E0;'>
-        <div class='cat-title'>Fashion</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png' />
-    </div>
-    """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class='category-card' style='background-color:#FFD6E0;'>
+            <div class='cat-title'>Fashion</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png' />
+        </div>
+        """, unsafe_allow_html=True)
 
-with col3:
-    st.markdown("""
-    <div class='category-card' style='background-color:#FFF4CC;'>
-        <div class='cat-title'>Food</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png' />
-    </div>
-    """, unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+        <div class='category-card' style='background-color:#FFF4CC;'>
+            <div class='cat-title'>Food</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png' />
+        </div>
+        """, unsafe_allow_html=True)
 
-with col4:
-    st.markdown("""
-    <div class='category-card' style='background-color:#D9FCE3;'>
-        <div class='cat-title'>Nature</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png' />
-    </div>
-    """, unsafe_allow_html=True)
+    with col4:
+        st.markdown("""
+        <div class='category-card' style='background-color:#D9FCE3;'>
+            <div class='cat-title'>Nature</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png' />
+        </div>
+        """, unsafe_allow_html=True)
 
-st.caption("Each category represents a classification target available in this app.")
+    st.caption("Each category represents a classification target available in this app.")
+    st.divider()
 
-st.divider()
-
-# ==========================
-# Mode: Deteksi / Klasifikasi
-# ==========================
-menu = st.radio("Select Mode:", ["Home", "Image Detection", "Image Classification"], horizontal=True)
-
-if menu == "Image Detection":
+elif menu == "Image Detection":
     st.header("🔍 Object Detection (YOLO)")
     st.write("Upload an image below and run YOLO detection.")
 
-    # layout dua kolom (sedikit dipersempit biar hasilnya kecil)
     col1, col2 = st.columns([1, 1])
 
     with col1:
@@ -167,7 +163,7 @@ if menu == "Image Detection":
 
         if uploaded_file:
             img = Image.open(uploaded_file)
-            st.image(img, caption="Uploaded Image", width=300)  # 
+            st.image(img, caption="Uploaded Image", width=300)
 
         run_button = st.button("🚀 Run Detection")
 
@@ -180,26 +176,22 @@ if menu == "Image Detection":
             results = yolo_model(img)
             inference_time = (time.time() - start_time) * 1000
 
-            # 🔹 ambil hasil deteksi dan ubah format warna BGR → RGB agar tidak berubah
             result_img = results[0].plot()
             result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
-
-            # 🔹 tampilkan gambar hasil deteksi lebih kecil tapi warna tetap asli
             result_placeholder.image(result_img, caption="Detected Objects", width=300)
 
             st.write(f"⏱️ Inference Time: **{inference_time:.2f} ms**")
 
-            # tampilkan jumlah objek terdeteksi
             detected_objects = [box.cls for box in results[0].boxes]
             if detected_objects:
                 st.write(f"🎯 **Objects detected:** {len(detected_objects)}")
             else:
                 st.warning("No objects detected.")
+
 elif menu == "Image Classification":
     st.header("🖼️ Image Classification (CNN)")
     st.write("Upload an image below to classify it using the CNN model.")
 
-    # Layout dua kolom
     col1, col2 = st.columns([1, 1])
 
     with col1:
@@ -217,17 +209,10 @@ elif menu == "Image Classification":
         result_placeholder = st.empty()
 
         if uploaded_file and run_button:
-            # ==========================
-            # Preprocessing
-            # ==========================
             img_resized = img.resize((224, 224))
             img_array = image.img_to_array(img_resized)
-            img_array = np.expand_dims(img_array, axis=0)
-            img_array = img_array / 255.0  # Normalisasi
+            img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-            # ==========================
-            # Prediction
-            # ==========================
             start_time = time.time()
             prediction = classifier.predict(img_array)
             inference_time = (time.time() - start_time) * 1000
@@ -235,13 +220,9 @@ elif menu == "Image Classification":
             class_index = np.argmax(prediction)
             confidence = np.max(prediction) * 100
 
-            # Nama kelas opsional (jika diketahui)
             class_labels = ["Animal", "Fashion", "Food", "Nature"]
             predicted_label = class_labels[class_index] if class_index < len(class_labels) else f"Class {class_index}"
 
-            # ==========================
-            # Output ke Streamlit
-            # ==========================
             result_placeholder.success("✅ Classification complete!")
             st.write(f"🎯 **Predicted Class:** {predicted_label}")
             st.write(f"🔥 **Confidence:** {confidence:.2f}%")
