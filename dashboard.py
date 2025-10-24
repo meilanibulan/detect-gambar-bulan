@@ -138,46 +138,63 @@ menu = st.radio("Select Mode:", ["Home", "Image Detection", "Image Classificatio
 
 if menu == "Image Detection":
     st.header("🔍 Object Detection (YOLO)")
-    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
+    st.write("Upload an image below and run YOLO detection.")
 
-    if uploaded_file:
-        img = Image.open(uploaded_file)
-        st.image(img, caption="Uploaded Image", use_container_width=True)
+    # layout dua kolom
+    col1, col2 = st.columns([1, 1])
 
-        start_time = time.time()
-        results = yolo_model(img)
-        inference_time = (time.time() - start_time) * 1000
+    with col1:
+        st.markdown("### 📤 Upload Image")
+        uploaded_file = st.file_uploader("Select an image (JPG/PNG)", type=["jpg", "jpeg", "png"])
 
-        st.success("Detection complete!")
-        st.image(results[0].plot(), caption="Detected Objects", use_container_width=True)
-        st.write(f"⏱️ Inference Time: **{inference_time:.2f} ms**")
+        if uploaded_file:
+            img = Image.open(uploaded_file)
+            st.image(img, caption="Uploaded Image", use_container_width=True)
 
-elif menu == "Image Classification":
-    st.header("🖼️ Image Classification (CNN)")
-    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
+        run_button = st.button("🚀 Run Detection")
 
-    if uploaded_file:
-        img = Image.open(uploaded_file)
-        st.image(img, caption="Uploaded Image", use_container_width=True)
+    with col2:
+        st.markdown("### 🧠 Detection Result")
+        result_placeholder = st.empty()
 
-        # Preprocessing
-        img_resized = img.resize((224, 224))
-        img_array = image.img_to_array(img_resized)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array = img_array / 255.0
+        if uploaded_file and run_button:
+            start_time = time.time()
+            results = yolo_model(img)
+            inference_time = (time.time() - start_time) * 1000
 
-        # Prediction
-        start_time = time.time()
-        prediction = classifier.predict(img_array)
-        inference_time = (time.time() - start_time) * 1000
+            result_img = results[0].plot()
+            result_placeholder.image(result_img, caption="Detected Objects", use_container_width=True)
+            st.write(f"⏱️ Inference Time: **{inference_time:.2f} ms**")
 
-        class_index = np.argmax(prediction)
-        confidence = np.max(prediction) * 100
+            # tampilkan objek yang terdeteksi
+            detected_objects = [box.cls for box in results[0].boxes]
+            if detected_objects:
+                st.write(f"🎯 **Objects detected:** {len(detected_objects)}")
+            else:
+                st.warning("No objects detected.")
 
-        st.success("Classification complete!")
-        st.write(f"🎯 **Predicted Class:** {class_index}")
-        st.write(f"🔥 **Confidence:** {confidence:.2f}%")
-        st.write(f"⏱️ **Inference Time:** {inference_time:.2f} ms")
+    # styling halus untuk background
+    st.markdown("""
+    <style>
+    .block-container {
+        background-color: #FFFBEA;
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+    .stButton>button {
+        background-color: #E0BBE4;
+        color: black;
+        border-radius: 10px;
+        border: none;
+        padding: 0.5rem 1.2rem;
+        font-weight: 600;
+    }
+    .stButton>button:hover {
+        background-color: #D291BC;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 else:
     st.info("👋 Welcome! Use the top menu to explore Image Detection or Classification features.")
