@@ -32,7 +32,7 @@ if "log" not in st.session_state:
 # SIDEBAR MENU
 # ==========================
 with st.sidebar:
-    st.markdown("### Features That\n### Can Be Used")
+    st.markdown("### Features That Can Be Used")
     menu = st.radio(
         "Navigation",
         ["Home", "Image Detection", "Image Classification", "Statistics", "About"],
@@ -129,10 +129,10 @@ st.markdown("""
 # HOME PAGE
 # ==========================
 if menu == "Home":
-    st.markdown("## WELCOME TO MY IMAGE DETECTION 🌙")
-    st.caption("Welcome to Bulandari's image detection website! Choose the features that best suit your needs.")
-    st.markdown("<div class='panel-white'>", unsafe_allow_html=True)
-    st.markdown("**You can use this website to detect images by theme:**")
+    st.markdown("## **WELCOME TO MY IMAGE DETECTION**🌙")
+    st.caption("### Welcome to Bulandari's image detection website! Choose the features that best suit your needs.")
+    st.markdown("<div class='black'>", unsafe_allow_html=True)
+    st.markdown("#### **You can use this website to detect images by theme:**")
 
     # layout 2 atas, 2 bawah
     row1_col1, row1_col2 = st.columns(2, gap="medium")
