@@ -182,40 +182,53 @@ elif menu == "Image Classification":
     st.header("🖼️ Image Classification (CNN)")
     st.write("Upload an image below to classify it using the CNN model.")
 
-    # Upload file
-    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
+    # Layout dua kolom
+    col1, col2 = st.columns([1, 1])
 
-    if uploaded_file:
-        # Tampilkan gambar yang diunggah
-        img = Image.open(uploaded_file)
-        st.image(img, caption="Uploaded Image", use_container_width=True)
+    with col1:
+        st.markdown("### 📤 Upload Image")
+        uploaded_file = st.file_uploader("Select an image (JPG/PNG)", type=["jpg", "jpeg", "png"])
 
-        # ==========================
-        # Preprocessing
-        # ==========================
-        img_resized = img.resize((224, 224))
-        img_array = image.img_to_array(img_resized)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array = img_array / 255.0  # Normalisasi
+        if uploaded_file:
+            img = Image.open(uploaded_file)
+            st.image(img, caption="Uploaded Image", use_container_width=True)
 
-        # ==========================
-        # Prediction
-        # ==========================
-        start_time = time.time()
-        prediction = classifier.predict(img_array)
-        inference_time = (time.time() - start_time) * 1000
+        run_button = st.button("🚀 Run Classification")
 
-        # Ambil hasil prediksi tertinggi
-        class_index = np.argmax(prediction)
-        confidence = np.max(prediction) * 100
+    with col2:
+        st.markdown("### 🧠 Classification Result")
+        result_placeholder = st.empty()
 
-        # ==========================
-        # Output ke Streamlit
-        # ==========================
-        st.success("✅ Classification complete!")
-        st.write(f"🎯 **Predicted Class:** {class_index}")
-        st.write(f"🔥 **Confidence:** {confidence:.2f}%")
-        st.write(f"⏱️ **Inference Time:** {inference_time:.2f} ms")
+        if uploaded_file and run_button:
+            # ==========================
+            # Preprocessing
+            # ==========================
+            img_resized = img.resize((224, 224))
+            img_array = image.img_to_array(img_resized)
+            img_array = np.expand_dims(img_array, axis=0)
+            img_array = img_array / 255.0  # Normalisasi
+
+            # ==========================
+            # Prediction
+            # ==========================
+            start_time = time.time()
+            prediction = classifier.predict(img_array)
+            inference_time = (time.time() - start_time) * 1000
+
+            class_index = np.argmax(prediction)
+            confidence = np.max(prediction) * 100
+
+            # Nama kelas opsional (jika diketahui)
+            class_labels = ["Animal", "Fashion", "Food", "Nature"]
+            predicted_label = class_labels[class_index] if class_index < len(class_labels) else f"Class {class_index}"
+
+            # ==========================
+            # Output ke Streamlit
+            # ==========================
+            result_placeholder.success("✅ Classification complete!")
+            st.write(f"🎯 **Predicted Class:** {predicted_label}")
+            st.write(f"🔥 **Confidence:** {confidence:.2f}%")
+            st.write(f"⏱️ **Inference Time:** {inference_time:.2f} ms")
 
     # styling halus untuk background
     st.markdown("""
