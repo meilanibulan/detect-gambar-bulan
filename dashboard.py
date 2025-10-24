@@ -219,7 +219,8 @@ def load_models():
             st.success("Model CNN Classifier berhasil dimuat.")
     except Exception as e:
         st.error(f"Gagal memuat CNN Classifier: {e}")
- return yolo, clf
+
+    return yolo, clf
 
 yolo_model, classifier = load_models()
 
