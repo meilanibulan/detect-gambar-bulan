@@ -38,8 +38,18 @@ st.markdown(
         color: white;
     }
     .subtext {
-        color: #C5C5C5;
+        color: black;
         font-size: 16px;
+    }
+    .emoji-card {
+        background-color: rgba(255,255,255,0.05);
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 22px;
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     </style>
     """,
