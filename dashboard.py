@@ -131,7 +131,7 @@ hr{ border-color: rgba(255,255,255,.08); }
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
-  font-size:1.5rem
+  font-size:1.5rem !important;
 }
 .panel h3{ margin:0 0 .6rem 0; font-size:1.02rem; font-weight:800; }
 
