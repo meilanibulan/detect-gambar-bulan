@@ -88,7 +88,7 @@ hr{ border-color: rgba(255,255,255,.08); }
   border-color: rgba(100,210,196,.65) !important; color: var(--teal-1) !important;
 }
 .stButton > button:disabled{
-  background: linear-gradient(160deg, #1f9e8c 100%, #2e3f8f 100%) !important;
+  background: linear-gradient(160deg, #1f9e8c 0%, #2e3f8f 70%) !important;
   color:#0a1418 !important;
   border: 1px solid var(--teal-2) !important;
   box-shadow: 0 8px 24px rgba(31,158,140,.35) !important;
