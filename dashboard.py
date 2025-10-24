@@ -23,11 +23,16 @@ def load_models():
 
 yolo_model, classifier = load_models()
 
+if "hist" not in st.session_state:
+    st.session_state["hist"] = {"det": [], "cls": []}
+if "log" not in st.session_state:
+    st.session_state["log"] = []
+    
 # ==========================
 # SIDEBAR MENU
 # ==========================
 with st.sidebar:
-    st.markdown("### Features That\nCan Be Used")
+    st.markdown("### Features That\n### Can Be Used")
     menu = st.radio(
         "Navigation",
         ["Home", "Image Detection", "Image Classification", "Statistics", "About"],
@@ -187,31 +192,51 @@ if menu == "Home":
 elif menu == "Image Detection":
     st.header("🔍 Object Detection (YOLO)")
     st.write("Upload an image below and run YOLO detection.")
-    c1, c2 = st.columns([1,1])
+
+    # Layout dua kolom
+    c1, c2 = st.columns([1, 1])
+
     with c1:
         st.markdown("### 📤 Upload Image")
-        f = st.file_uploader("Select an image (JPG/PNG)", type=["jpg","jpeg","png"])
+        f = st.file_uploader("Select an image (JPG/PNG)", type=["jpg", "jpeg", "png"])
+
         if f:
             img = Image.open(f)
             st.image(img, caption="Uploaded Image", width=300)
+
         run = st.button("🚀 Run Detection")
+
     with c2:
         st.markdown("### 🧠 Detection Result")
+
         if f and run:
+            # Jalankan YOLO
             t0 = time.time()
             results = yolo_model(img)
-            t = (time.time()-t0)*1000
+            t = (time.time() - t0) * 1000
+
+            # Konversi warna hasil (YOLO -> BGR ke RGB)
             rimg = results[0].plot()
             rimg = cv2.cvtColor(rimg, cv2.COLOR_BGR2RGB)
+
             st.image(rimg, caption="Detected Objects", width=300)
             st.write(f"⏱️ Inference Time: {t:.2f} ms")
+
+            # Hitung jumlah objek terdeteksi
             num_objs = int(len(results[0].boxes)) if results and results[0].boxes is not None else 0
-            # simpan ke history dan log
+
+            # Simpan ke history dan log (pastikan session_state ada)
+            if "hist" not in st.session_state:
+                st.session_state["hist"] = {"det": []}
+            if "log" not in st.session_state:
+                st.session_state["log"] = []
+
             st.session_state["hist"]["det"].append({
                 "ts": time.time(),
                 "ms": float(t),
                 "objects": num_objs
             })
+
             st.session_state["log"].append({
                 "time": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "mode": "detection",
@@ -226,34 +251,65 @@ elif menu == "Image Detection":
 elif menu == "Image Classification":
     st.header("🖼️ Image Classification (CNN)")
     st.write("Upload an image below to classify it using the CNN model.")
-    c1,c2 = st.columns([1,1])
+
+    # Layout dua kolom
+    c1, c2 = st.columns([1, 1])
+
     with c1:
         st.markdown("### 📤 Upload Image")
-        f = st.file_uploader("Select an image (JPG/PNG)", type=["jpg","jpeg","png"], key="cls")
+        f = st.file_uploader("Select an image (JPG/PNG)", type=["jpg", "jpeg", "png"], key="cls")
+
         if f:
             img = Image.open(f)
             st.image(img, caption="Uploaded Image", use_container_width=True)
+
         run = st.button("🚀 Run Classification")
+
     with c2:
         st.markdown("### 🧠 Classification Result")
+
         if f and run:
-            arr = image.img_to_array(img.resize((224,224)))
-            arr = np.expand_dims(arr, axis=0)/255.0
+            # ==========================
+            # Preprocessing
+            # ==========================
+            arr = image.img_to_array(img.resize((224, 224)))
+            arr = np.expand_dims(arr, axis=0) / 255.0
+
+            # ==========================
+            # Prediction
+            # ==========================
             t0 = time.time()
             pred = classifier.predict(arr)
-            t = (time.time()-t0)*1000
-            i = np.argmax(pred); conf = np.max(pred)*100
-            label = ["Animal","Fashion","Food","Nature"][i]
+            t = (time.time() - t0) * 1000
+
+            i = np.argmax(pred)
+            conf = np.max(pred) * 100
+            labels = ["Animal", "Fashion", "Food", "Nature"]
+            label = labels[i] if i < len(labels) else f"Class {i}"
+
+            # ==========================
+            # Output ke Streamlit
+            # ==========================
             st.success("✅ Classification complete!")
-            st.write(f"🎯 **Predicted:** {label}")
+            st.write(f"🎯 **Predicted Class:** {label}")
             st.write(f"🔥 **Confidence:** {conf:.2f}%")
             st.write(f"⏱️ **Inference Time:** {t:.2f} ms")
+
+            # ==========================
+            # Logging ke session_state
+            # ==========================
+            if "hist" not in st.session_state:
+                st.session_state["hist"] = {"cls": []}
+            if "log" not in st.session_state:
+                st.session_state["log"] = []
+
             st.session_state["hist"]["cls"].append({
                 "ts": time.time(),
                 "ms": float(t),
                 "label": label,
                 "conf": float(conf)
             })
+
             st.session_state["log"].append({
                 "time": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "mode": "classification",
@@ -269,33 +325,33 @@ elif menu == "Image Classification":
 elif menu == "Statistics":
     st.header("📊 Statistics")
 
-    det_runs = st.session_state["hist"]["det"]
-    cls_runs = st.session_state["hist"]["cls"]
+    # --- Pastikan state ada (menghindari KeyError) ---
+    hist = st.session_state.setdefault("hist", {"det": [], "cls": []})
+    log  = st.session_state.setdefault("log",  [])
+
+    det_runs = hist["det"]
+    cls_runs = hist["cls"]
 
     if not det_runs and not cls_runs:
         st.info("Belum ada data. Jalankan *Image Detection* atau *Image Classification* terlebih dahulu.")
     else:
+        import pandas as pd  # pastikan impor ini ada di atas file juga OK
         c1, c2, c3 = st.columns(3)
         with c1:
             st.metric("Total Detection Runs", len(det_runs))
         with c2:
             st.metric("Total Classification Runs", len(cls_runs))
         with c3:
-            avg_ms = 0.0
-            if det_runs or cls_runs:
-                all_ms = [r["ms"] for r in det_runs] + [r["ms"] for r in cls_runs]
-                if all_ms:
-                    avg_ms = sum(all_ms) / len(all_ms)
+            all_ms = [r["ms"] for r in det_runs] + [r["ms"] for r in cls_runs]
+            avg_ms = (sum(all_ms) / len(all_ms)) if all_ms else 0.0
             st.metric("Avg Inference Time", f"{avg_ms:.1f} ms")
 
         st.markdown("### ⏱️ Inference Time per Run")
-
-        # Detection chart
         if det_runs:
             df_det = pd.DataFrame({
-                "run": list(range(1, len(det_runs) + 1)),
+                "run": list(range(1, len(det_runs)+1)),
                 "ms": [r["ms"] for r in det_runs],
-                "objects": [r["objects"] for r in det_runs],
+                "objects": [r.get("objects", 0) for r in det_runs],
             }).set_index("run")
             st.subheader("Detection")
             st.line_chart(df_det[["ms"]], height=220, use_container_width=True)
@@ -303,13 +359,12 @@ elif menu == "Statistics":
         else:
             st.info("Belum ada data Detection.")
 
-        # Classification chart
         if cls_runs:
             df_cls = pd.DataFrame({
-                "run": list(range(1, len(cls_runs) + 1)),
+                "run": list(range(1, len(cls_runs)+1)),
                 "ms": [r["ms"] for r in cls_runs],
                 "label": [r["label"] for r in cls_runs],
-                "confidence": [r["conf"] * 100 for r in cls_runs],  # persen
+                "confidence": [r["conf"]*100 for r in cls_runs],
             }).set_index("run")
             st.subheader("Classification")
             st.line_chart(df_cls[["ms"]], height=220, use_container_width=True)
@@ -318,8 +373,8 @@ elif menu == "Statistics":
             st.info("Belum ada data Classification.")
 
         st.markdown("### 🧾 Session Log")
-        if st.session_state["log"]:
-            df_log = pd.DataFrame(st.session_state["log"])
+        if log:
+            df_log = pd.DataFrame(log)
             st.dataframe(df_log, use_container_width=True, height=260)
         else:
             st.write("Log kosong.")
