@@ -140,7 +140,7 @@ if menu == "Image Detection":
     st.header("🔍 Object Detection (YOLO)")
     st.write("Upload an image below and run YOLO detection.")
 
-    # layout dua kolom
+    # layout dua kolom (sedikit dipersempit biar hasilnya kecil)
     col1, col2 = st.columns([1, 1])
 
     with col1:
@@ -149,7 +149,7 @@ if menu == "Image Detection":
 
         if uploaded_file:
             img = Image.open(uploaded_file)
-            st.image(img, caption="Uploaded Image", use_container_width=True)
+            st.image(img, caption="Uploaded Image", width=300)  # 
 
         run_button = st.button("🚀 Run Detection")
 
@@ -162,11 +162,16 @@ if menu == "Image Detection":
             results = yolo_model(img)
             inference_time = (time.time() - start_time) * 1000
 
+            # 🔹 ambil hasil deteksi dan ubah format warna BGR → RGB agar tidak berubah
             result_img = results[0].plot()
-            result_placeholder.image(result_img, caption="Detected Objects", use_container_width=True)
+            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+
+            # 🔹 tampilkan gambar hasil deteksi lebih kecil tapi warna tetap asli
+            result_placeholder.image(result_img, caption="Detected Objects", width=300)
+
             st.write(f"⏱️ Inference Time: **{inference_time:.2f} ms**")
 
-            # tampilkan objek yang terdeteksi
+            # tampilkan jumlah objek terdeteksi
             detected_objects = [box.cls for box in results[0].boxes]
             if detected_objects:
                 st.write(f"🎯 **Objects detected:** {len(detected_objects)}")
