@@ -180,12 +180,12 @@ if menu == "Home":
     # How to use
     st.markdown("""
     <div class='howto'>
-      <h4>Bagaimana cara menggunakan situs ini</h4>
+      <h4>How to use this site:</h4>
       <ol>
-        <li>Pilih menu di sidebar: <b>Image Detection</b> atau <b>Image Classification</b>.</li>
-        <li>Upload gambar JPG/PNG di panel kiri, lalu klik tombol Run.</li>
-        <li>Hasil akan muncul di panel kanan (gambar anotasi / label & confidence).</li>
-        <li>Lihat <b>Statistics</b> untuk ringkas jumlah run sesi ini, dan <b>About</b> untuk info tambahan.</li>
+        <li>Select the menu in the sidebar: <b>Image Detection</b> or <b>Image Classification</b>.</li>
+        <li>Upload a JPG/PNG image in the left panel, then click the Run button.</li>
+        <li>The results will appear in the right panel (image annotation/label and confidence).</li>
+        <li>See <b>Statistics</b> for a summary of the number of runs for this session, dan <b>About</b> for additional information.</li>
       </ol>
     </div>
     """, unsafe_allow_html=True)
@@ -341,9 +341,9 @@ elif menu == "Statistics":
     cls_runs = hist["cls"]
 
     if not det_runs and not cls_runs:
-        st.info("Belum ada data. Jalankan *Image Detection* atau *Image Classification* terlebih dahulu.")
+        st.info("No data yet. Run *Image Detection* or *Image Classification* first.")
     else:
-        import pandas as pd  # pastikan impor ini ada di atas file juga OK
+        import pandas as pd 
         c1, c2, c3 = st.columns(3)
         with c1:
             st.metric("Total Detection Runs", len(det_runs))
@@ -390,30 +390,29 @@ elif menu == "Statistics":
 elif menu == "About":
     st.header("🌙 Tentang Dashboard Ini")
     st.write("""
-    **Bulan Image Detection Dashboard** dikembangkan sebagai media pembelajaran dan demonstrasi
-    penerapan teknologi **Kecerdasan Buatan (AI)** di bidang **Computer Vision**.
-    Melalui dashboard ini, pengguna dapat melakukan deteksi objek dan klasifikasi gambar
-    secara interaktif dan mudah digunakan.
+    **Bulan Image Detection Dashboard** was developed as a learning tool and demonstration tool for the application 
+    of Artificial Intelligence (AI) technology in the field of Computer Vision.
+    This dashboard allows users to perform object detection and image classification in an interactive and easy-to-use manner.
     """)
 
     st.markdown("### 🎯 Tujuan Pengembangan")
     st.write("""
-    Dashboard ini bertujuan untuk memberikan gambaran bagaimana model deep learning
-    mampu mengenali pola visual dari gambar, serta membantu mahasiswa dan pengguna umum
-    memahami konsep dasar **deteksi objek (Object Detection)** dan **klasifikasi gambar (Image Classification)**.
+    This dashboard aims to provide an overview of how deep learning models recognize visual patterns in 
+    images and to help students and general users understand the basic concepts of 
+    **Object Detection** and **Image Classification**.
     """)
 
     st.markdown("### ⚙️ Fitur Utama")
     st.write("""
-    - **Image Detection** – Mendeteksi objek yang terdapat di dalam gambar menggunakan model YOLO.  
-    - **Image Classification** – Mengelompokkan gambar ke dalam empat kategori: *Animal, Fashion, Food,* dan *Nature.*  
-    - **Statistics** – Menampilkan hasil dan performa deteksi/klasifikasi selama sesi berjalan. 
+    - **Image Detection** – Detecting objects in images using the YOLO model.  
+    - **Image Classification** – Grouping images into four categories: *Animal, Fashion, Food,* and *Nature.*  
+    - **Statistics** –Displays detection/classification results and performance during the running session.
     """)
 
     st.markdown("### 👩‍💻 Pemilik")
     st.write("""
-    Dashboard ini dibuat oleh **Meilani Bulandari Hasibuan** mahasiswa Statistika Universitas Syiah Kuala Tahun 2023
+    This dashboard was created by **Meilani Bulandari Hasibuan**, a Statistics student at Syiah Kuala University in 2023.
     """)
 
     st.markdown("---")
-    st.caption("© 2025 Meilani Bulandari – Untuk tujuan edukasi dan penelitian.")
+    st.caption("© 2025 Meilani Bulandari Hasibuan")
