@@ -29,152 +29,177 @@ if "logs" not in st.session_state:    st.session_state["logs"]   = []
 if "scores" not in st.session_state:  st.session_state["scores"] = []
 if "det_count" not in st.session_state: st.session_state["det_count"] = 0
 
+# =========================
+# THEME
+# =========================
+# THEME: Teal / Aqua Dashboard (replace the whole previous <style> block)
 st.markdown("""
 <style>
-/* === COLOR PATCH (kontras + keterbacaan) === */
-
-/* 1) Token warna — lebih gelap di bg, lebih terang di teks & teal */
+div.stDownloadButton > button:first-child {
+    background-color: #4CAF50;
+    color: white;
+}
+div.stDownloadButton > button:first-child:hover {
+    background-color: #45a049;
+    color: white;
+}
+    
+/* ===== TOKENS (teal) ===== */
 :root{
-  --bg-1:#081018;           /* lebih gelap */
-  --bg-2:#0A1520;
-  --bg-3:#0F2430;
-  --text:#F4FBFD;           /* teks utama lebih putih */
-  --muted:#C8D6DE;          /* teks sekunder lebih terang */
-  --teal-1:#C7FBF3;         /* mint terang */
-  --teal-2:#44E6D2;         /* aksen utama (lebih vivid) */
-  --teal-3:#14B9AE;         /* aksen sekunder */
-  --teal-4:#0E6E69;
-  --glass:rgba(255,255,255,.08);
+  --bg-1:#0A1219;        /* base navy-dark */
+  --bg-2:#0F1C25;        /* panel dark */
+  --bg-3:#122430;        /* panel lighter */
+  --text:#E9F3F7;        /* primary text */
+  --muted:#9FB3BF;       /* secondary text */
+  --teal-1:#B6F0EA;      /* light aqua */
+  --teal-2:#64D2C4;      /* teal */
+  --teal-3:#1F9E8C;      /* deep teal */
+  --teal-4:#0C5E59;      /* very deep teal */
+  --glass: rgba(255,255,255,.06);
 }
 
-/* 2) Nav pills — teks/ikon lebih jelas saat aktif & non-aktif */
-.stButton > button{
+/* ===== GLOBAL ===== */
+html, body, [data-testid="stAppViewContainer"]{
+  background: radial-gradient(1200px 800px at 10% -10%, #112733 0%, var(--bg-1) 50%, #061018 100%) !important;
   color: var(--text) !important;
 }
+h1,h2,h3,h4,h5,h6,p,span,div,label,small{ color: var(--text); }
+.muted{ color: var(--muted); }
+hr{ border-color: rgba(255,255,255,.08); }
+
+[data-testid="stHeader"], [data-testid="stToolbar"]{ background: transparent !important; box-shadow:none !important; }
+[data-testid="stSidebar"]{
+  background: linear-gradient(180deg, #081017 0%, #0C181F 100%) !important;
+  color: var(--text) !important;
+}
+
+/* ===== NAV PILLS ===== */
+.navbar{ display:flex; gap:22px; padding:12px 0 14px 0; }
+.stButton > button{
+  background: linear-gradient(180deg, #101b24, #0f1a22) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 14px !important;
+  padding: 8px 18px !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 6px 18px rgba(0,0,0,.35);
+  opacity: 1 !important;
+}
+.stButton > button:hover{
+  border-color: rgba(100,210,196,.65) !important; color: var(--teal-1) !important;
+}
 .stButton > button:disabled{
-  background: linear-gradient(160deg, var(--teal-2) 0%, var(--teal-1) 70%) !important;
-  color:#092126 !important; /* kontras lebih tinggi */
+  background: linear-gradient(160deg, #1f9e8c 100%, #2e3f8f 100%) !important;
+  color:#0a1418 !important;
+  border: 1px solid var(--teal-2) !important;
+  box-shadow: 0 8px 24px rgba(31,158,140,.35) !important;
+  opacity: 1 !important;
 }
 
-/* 3) KPI cards — border & isi lebih “pop” */
+/* ===== KPI CARDS (rename-safe: still .card--peach) ===== */
 .card--peach{
-  background: linear-gradient(135deg, rgba(31,158,140,.45) 0%, rgba(12,94,89,.40) 100%),
-              linear-gradient(180deg, #0d1a22 0%, #102632 100%);
-  border: 1px solid rgba(68,230,210,.55);
+  background: linear-gradient(135deg, rgba(31,158,140,.35) 0%, rgba(12,94,89,.35) 100%), 
+              linear-gradient(180deg, #0f1d26 0%, #122430 100%);
+  border: 1px solid rgba(100,210,196,.35);
+  border-radius: 18px;
+  padding: 18px 16px;
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.05),
+    inset 0 0 40px rgba(31,158,140,.10);
+  backdrop-filter: blur(3px);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.card--peach h3{ color:#FFFFFF; }
-.card--peach .big{ color:#FFFFFF; }
+.card--peach:hover{
+  transform: translateY(-2px);
+  border-color: rgba(182,240,234,.75);
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 50px rgba(100,210,196,.18);
+}
+.card--peach h3{ margin:0; font-size:1rem; font-weight:800; color:#E8FAFF; }
+.card--peach .big{ font-size:1.6rem; font-weight:900; color:#FFFFFF; }
 .card--peach .pill{
-  background: rgba(199,251,243,.12);
-  color:#ECFFFD;
-  border:1px solid rgba(68,230,210,.55);
+  display:inline-block; margin-top:6px; font-size:.78rem; padding:4px 10px; border-radius:10px;
+  background: rgba(182,240,234,.10); color:#DFF9F5; border:1px solid rgba(100,210,196,.35);
 }
 
-/* 4) Panel Upload/Result/Statistics — teks dan tepi lebih terang */
+/* ===== PANELS (Upload/Result/Statistics) ===== */
 .panel{
   background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);
-  border: 1px solid rgba(255,255,255,.12);
-  color: var(--text);
+  border: 1px solid var(--glass);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
 }
-.panel h3{ color:#FFFFFF; }
+.panel h3{ margin:0 0 .6rem 0; font-size:1.02rem; font-weight:800; }
 
-/* 5) File uploader — garis & teks terlihat jelas */
+/* ===== IMAGE FRAME (teal glass) ===== */
+.gold-frame{
+  background: linear-gradient(140deg, rgba(182,240,234,.10), rgba(31,158,140,.10));
+  border: 1px solid rgba(100,210,196,.35);
+  border-radius: 16px; padding: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.45), inset 0 0 12px rgba(182,240,234,.12);
+}
+.gold-frame img{ border-radius: 10px; }
+
+/* ===== TRANSACTIONS ===== */
+.txn{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(100,210,196,.18);
+  border-radius: 12px; padding: 10px 12px;
+}
+
+/* ===== FIX: FILE NAME VISIBILITY ===== */
+[data-testid="stFileUploader"] div[role="listitem"] {
+  color: var(--text) !important;              /* warna teks jadi putih */
+  font-weight: 500 !important;
+  background: rgba(255,255,255,.04) !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+  margin-top: 4px !important;
+}
+[data-testid="stFileUploader"] div[role="listitem"] span {
+  color: var(--text) !important;
+  opacity: 0.9 !important;
+}
+
+/* ===== FIX: FILE UPLOADER VISIBILITY ===== */
 [data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"]{
-  background: rgba(255,255,255,.06) !important;
-  border: 1.8px dashed var(--teal-2) !important;
+  background: rgba(255,255,255,.04) !important;
+  border: 1.5px dashed rgba(100,210,196,.45) !important;
+  border-radius: 14px !important;
+  color: var(--text) !important;
 }
-[data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"] *{
-  color:#F2FFFF !important;
-  opacity:1 !important;
+[data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"]:hover{
+  background: rgba(100,210,196,.08) !important;
+  border-color: var(--teal-2) !important;
+  box-shadow: 0 0 12px rgba(100,210,196,.25);
+}
+[data-testid="stFileUploader"] label div{
+  color: var(--text) !important;
+  opacity: .9 !important;
 }
 
-/* 6) Divider & teks umum */
-hr{ border-color: rgba(255,255,255,.14) !important; }
-.muted, .stMarkdown p, .stMarkdown li{ color: var(--muted) !important; }
+/* Button “Browse files” */
+[data-testid="stFileUploader"] button{
+  background: linear-gradient(90deg, var(--teal-2), var(--teal-3)) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+  box-shadow: 0 4px 12px rgba(31,158,140,.35);
+  transition: all .2s ease-in-out;
+}
+[data-testid="stFileUploader"] button:hover{
+  background: linear-gradient(90deg, var(--teal-1), var(--teal-2)) !important;
+  color: #0A1418 !important;
+  box-shadow: 0 6px 18px rgba(182,240,234,.35);
+}
+
 </style>
 """, unsafe_allow_html=True)
-
-# =========================
-# MODELS (cached)
-# =========================
-@st.cache_resource(show_spinner=True)
-def load_models():
-    yolo, clf = None, None
-    try:
-        yolo = YOLO(YOLO_PATH)
-    except Exception as e:
-        st.warning(f"YOLO model gagal dimuat: {e}")
-    try:
-        clf = tf.keras.models.load_model(CLF_PATH, compile=False)
-    except Exception as e:
-        st.warning(f"Classifier gagal dimuat: {e}")
-    return yolo, clf
-
-# =========================
-# NAVBAR
-# =========================
-def navbar(active: str):
-    labels = ["Home", "Image Detection", "Image Classification", "Statistics", "About Model", "How It Works"]
-    st.markdown("<div class='navbar'>", unsafe_allow_html=True)
-    cols = st.columns(len(labels), gap="small")
-    for i, lab in enumerate(labels):
-        with cols[i]:
-            if lab == active:
-                st.button(lab, disabled=True, key=f"nav_{lab}")
-            else:
-                if st.button(lab, key=f"nav_{lab}"):
-                    st.session_state["page"] = lab
-                    st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-navbar(st.session_state["page"])
-st.markdown("<div class='after-nav'></div>", unsafe_allow_html=True)
-
-# =========================
-# HELPERS
-# =========================
-def to_png_bytes(img_np_bgr) -> bytes:
-    """Convert Ultralytics plotted (BGR numpy) -> PNG bytes (no OpenCV)."""
-    rgb = img_np_bgr[..., ::-1]               # BGR -> RGB
-    pil = Image.fromarray(rgb.astype("uint8"))
-    buf = io.BytesIO(); pil.save(buf, format="PNG")
-    return buf.getvalue()
-
-def add_log(filename, mode, label, conf):
-    st.session_state["logs"].append({"file": filename, "mode": mode, "label": label, "confidence": float(conf)})
-    st.session_state["scores"].append(float(conf))
-
-def kpi_cards(inf_ms: float, det_total: int):
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown(f"<div class='card--peach'><h3>Available</h3><div class='big'>{det_total}</div><div class='pill'>Total detections</div></div>", unsafe_allow_html=True)
-    with c2:
-        acc = (np.mean(st.session_state["scores"])*100) if st.session_state["scores"] else 0.0
-        st.markdown(f"<div class='card--peach'><h3>Income</h3><div class='big'>{acc:.2f}%</div><div class='pill'>Session accuracy*</div></div>", unsafe_allow_html=True)
-    with c3:
-        st.markdown(f"<div class='card--peach'><h3>Expense</h3><div class='big'>{inf_ms:.1f} ms</div><div class='pill'>Inference time</div></div>", unsafe_allow_html=True)
-    st.caption("*Accuracy here = confidence proxy (max prob for classification, mean conf for detection).")
-
-def transactions_list():
-    st.markdown("### Transactions")
-    for r in reversed(st.session_state["logs"][-12:]):
-        color = "#A1E887" if r["confidence"] >= 0.5 else "#F98F8F"
-        st.markdown(
-            f"<div class='txn'><div style='display:flex; justify-content:space-between;'>"
-            f"<div><b>{r['file']}</b><div class='muted'>{r['mode']} → {r['label']}</div></div>"
-            f"<div style='font-weight:800; color:{color};'>{r['confidence']:.3f}</div></div></div>",
-            unsafe_allow_html=True
-        )
-
-def log_df() -> pd.DataFrame:
-    if not st.session_state["logs"]:
-        return pd.DataFrame(columns=["file","mode","label","confidence"])
-    return pd.DataFrame(st.session_state["logs"])
-
-# =========================
-# PAGES
-# =========================
-page = st.session_state["page"]
 
 if page == "Home":
     st.markdown("<h1>BULAN IMAGE DETECTION DASHBOARD 🌙</h1>", unsafe_allow_html=True)
