@@ -24,7 +24,11 @@ def load_models():
 yolo_model, classifier = load_models()
 
 if "hist" not in st.session_state:
-    st.session_state["hist"] = {"det": [], "cls": []}
+    st.session_state["hist"] = {
+        "det": [],  # detection history
+        "cls": []   # classification history
+    }
+
 if "log" not in st.session_state:
     st.session_state["log"] = []
     
