@@ -126,7 +126,7 @@ hr{ border-color: rgba(255,255,255,.08); }
 
 /* ===== PANELS (Upload/Result/Statistics) ===== */
 .panel{
-  background: linear-gradient(#1F9E8C, var(--bg-2) 0%, var(--bg-3) 100%);
+  background: linear-gradient(135deg, #1F9E8C 0%, #1F9E8C 100%);
   border: 1px solid var(--glass);
   border-radius: 18px;
   padding: 16px;
