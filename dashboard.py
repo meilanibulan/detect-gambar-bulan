@@ -46,9 +46,6 @@ st.markdown("""
   background: linear-gradient(180deg,#fff7ef 0%,#f6f0ff 100%) !important;
   border-right: 1px solid rgba(0,0,0,.06);
 }
-.block-container {
-    margin-top: 60px !important;
-}
 .stApp { background: #fffbe8; }
 .block-container{
   background: linear-gradient(145deg,#ffe9e9 0%,#efe7ff 50%,#e8fff3 100%);
@@ -75,6 +72,46 @@ st.markdown("""
   background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:12px;
   padding:16px; box-shadow:0 6px 18px rgba(0,0,0,.06);
 }
+/* ---- SPACING TOKENS ---- */
+:root{
+  --sp-8: 8px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px;
+  --sp-24: 24px; --sp-28: 28px; --sp-32: 32px; --sp-40: 40px; --sp-48: 48px;
+}
+
+/* Lebarkan padding konten utama + batasi lebar agar tidak terlalu penuh */
+.block-container{
+  margin-top: 60px !important;                  /* biar header nggak ketutup toolbar */
+  padding: var(--sp-32) var(--sp-48) !important;/* jarak dalam halaman */
+  max-width: 1200px;                            /* biar nyaman dibaca */
+}
+
+/* Panel putih (kartu besar) lebih lega + ada jarak bawah */
+.panel-white{
+  padding: var(--sp-24) var(--sp-32) !important;
+  margin-bottom: var(--sp-32) !important;
+  border-radius: 18px;
+}
+
+/* Kartu kategori lebih lega */
+.category-card{
+  padding: var(--sp-24) !important;
+  border-radius: 20px;
+}
+
+/* Grid antar-kolom lebih renggang */
+[data-testid="stHorizontalBlock"]{ gap: var(--sp-28) !important; }
+
+/* Spasi antar-bagian utilitas */
+.vspace-16{ height: 16px; }
+.vspace-24{ height: 24px; }
+.vspace-32{ height: 32px; }
+
+/* Sidebar sedikit lebih lebar biar tidak mepet */
+[data-testid="stSidebar"]{
+  min-width: 260px; max-width: 260px;
+  padding: var(--sp-16) var(--sp-16) !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -88,13 +125,14 @@ if menu == "Home":
     st.markdown("**You can use this website to detect images by theme:**")
 
     # layout 2 atas, 2 bawah
-    row1_col1, row1_col2 = st.columns(2, gap="large")
-    row2_col1, row2_col2 = st.columns(2, gap="large")
+    row1_col1, row1_col2 = st.columns(2, gap="medium")
+    row2_col1, row2_col2 = st.columns(2, gap="medium")
 
     with row1_col1:
          st.markdown("""
         <div class='category-card' style='background-color:#EDE2FF;'>
             <div class='cat-title'>Animal</div>
+            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
         </div>
         """, unsafe_allow_html=True)
@@ -103,14 +141,16 @@ if menu == "Home":
          st.markdown("""
         <div class='category-card' style='background-color:#FFD6E0;'>
             <div class='cat-title'>Fashion</div>
+            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png' />
-        </div>
+        </div> <div class='vspace-32'></div>
         """, unsafe_allow_html=True)
         
     with row2_col1:
         st.markdown("""
         <div class='category-card' style='background-color:#FFF4CC;'>
             <div class='cat-title'>Food</div>
+            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png' />
         </div>
         """, unsafe_allow_html=True)
@@ -119,6 +159,7 @@ if menu == "Home":
         st.markdown("""
         <div class='category-card' style='background-color:#D9FCE3;'>
             <div class='cat-title'>Nature</div>
+            <div class='vspace-32'></div>
             <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png' />
         </div>
         """, unsafe_allow_html=True)
