@@ -199,6 +199,17 @@ hr{ border-color: rgba(255,255,255,.08); }
 
 </style>
 """, unsafe_allow_html=True)
+
+from pathlib import Path
+
+def _is_hdf5(path: str) -> bool:
+    """Cek apakah file adalah format HDF5 valid (header b'\x89HDF')."""
+    try:
+        with open(path, "rb") as f:
+            return f.read(4) == b"\x89HDF"
+    except Exception:
+        return False
+
 # =========================
 # MODELS (cached)
 # =========================
@@ -224,6 +235,10 @@ def load_models():
 
 yolo_model, classifier = load_models()
 
+if classifier is None:
+    st.warning("Classifier belum berhasil dimuat. Pastikan file .h5 valid dan ada di folder 'model/'.")
+else:
+    st.success("Classifier siap digunakan")
 # =========================
 # NAVBAR
 # =========================
@@ -347,10 +362,7 @@ elif page == "Image Detection":
 
 elif page == "Image Classification":
     st.markdown("<h1>Image Classification</h1>", unsafe_allow_html=True)
-
-    if classifier is None:
-        st.error("Classifier model tidak tersedia. Pastikan file .h5 valid dan sesuai arsitektur.")
-        st.stop()
+    left, right = st.columns([1.35, 1])
 
     with left:
         st.markdown("<div class='panel'><h3>Upload</h3>", unsafe_allow_html=True)
