@@ -407,15 +407,13 @@ elif menu == "About":
     st.write("""
     - **Image Detection** – Mendeteksi objek yang terdapat di dalam gambar menggunakan model YOLO.  
     - **Image Classification** – Mengelompokkan gambar ke dalam empat kategori: *Animal, Fashion, Food,* dan *Nature.*  
-    - **Statistics** – Menampilkan hasil dan performa deteksi/klasifikasi selama sesi berjalan.  
-    - **Dataset** – Menyediakan ruang untuk menambah atau menguji gambar secara mandiri.
+    - **Statistics** – Menampilkan hasil dan performa deteksi/klasifikasi selama sesi berjalan. 
     """)
 
-    st.markdown("### 👩‍💻 Pengembang")
+    st.markdown("### 👩‍💻 Pemilik")
     st.write("""
-    Dashboard ini dibuat oleh **Bulandari** sebagai bagian dari proyek akademik di bidang
-    **Data Science** dan **Computer Vision**, menggunakan framework **Streamlit** untuk antarmuka interaktif.
+    Dashboard ini dibuat oleh **Meilani Bulandari Hasibuan** mahasiswa Statistika Universitas Syiah Kuala Tahun 2023
     """)
 
     st.markdown("---")
-    st.caption("© 2025 Bulandari – Untuk tujuan edukasi dan penelitian.")
+    st.caption("© 2025 Meilani Bulandari – Untuk tujuan edukasi dan penelitian.")
