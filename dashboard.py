@@ -347,7 +347,10 @@ elif page == "Image Detection":
 
 elif page == "Image Classification":
     st.markdown("<h1>Image Classification</h1>", unsafe_allow_html=True)
-    left, right = st.columns([1.35, 1])
+
+    if classifier is None:
+        st.error("Classifier model tidak tersedia. Pastikan file .h5 valid dan sesuai arsitektur.")
+        st.stop()
 
     with left:
         st.markdown("<div class='panel'><h3>Upload</h3>", unsafe_allow_html=True)
