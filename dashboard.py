@@ -10,13 +10,13 @@ import time
 # Konfigurasi Halaman
 # ==========================
 st.set_page_config(
-    page_title="🌝 Bulan Image Detection Dashboard",
+    page_title="Bulan Image Detection Dashboard 🌙",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ==========================
-# Load Model (dengan cache)
+# Load Model (cached)
 # ==========================
 @st.cache_resource
 def load_models():
@@ -27,7 +27,7 @@ def load_models():
 yolo_model, classifier = load_models()
 
 # ==========================
-# Header dan Menu Navigasi
+# Header
 # ==========================
 st.markdown(
     """
@@ -38,7 +38,7 @@ st.markdown(
         color: white;
     }
     .subtext {
-        color: black;
+        color: #C5C5C5;
         font-size: 16px;
     }
     .emoji-card {
@@ -65,20 +65,23 @@ st.markdown(
 st.divider()
 
 # ==========================
-# Statistik Ringkas
+# Kategori Cards (emoji)
 # ==========================
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Available", value=0, delta="Total detections")
+    st.markdown("<div class='emoji-card'>🐶 Animal</div>", unsafe_allow_html=True)
 
 with col2:
-    st.metric("Income", value="0.00%", delta="Session accuracy")
+    st.markdown("<div class='emoji-card'>👗 Fashion</div>", unsafe_allow_html=True)
 
 with col3:
-    st.metric("Expense", value="0.0 ms", delta="Inference time")
+    st.markdown("<div class='emoji-card'>🍔 Food</div>", unsafe_allow_html=True)
 
-st.caption("*Accuracy here = confidence proxy (max prob for classification, mean conf for detection).*")
+with col4:
+    st.markdown("<div class='emoji-card'>🌿 Nature</div>", unsafe_allow_html=True)
+
+st.caption("Each category represents a classification target available in this app.")
 
 # ==========================
 # Quick Actions
@@ -94,7 +97,7 @@ st.markdown("""
 st.divider()
 
 # ==========================
-# Mode: Deteksi atau Klasifikasi
+# Mode: Deteksi / Klasifikasi
 # ==========================
 menu = st.radio("Select Mode:", ["Home", "Image Detection", "Image Classification"], horizontal=True)
 
@@ -108,11 +111,11 @@ if menu == "Image Detection":
 
         start_time = time.time()
         results = yolo_model(img)
-        inference_time = (time.time() - start_time) * 1000  # in ms
+        inference_time = (time.time() - start_time) * 1000
 
         st.success("Detection complete!")
         st.image(results[0].plot(), caption="Detected Objects", use_container_width=True)
-        st.metric("Inference Time", f"{inference_time:.2f} ms")
+        st.write(f"⏱️ Inference Time: **{inference_time:.2f} ms**")
 
 elif menu == "Image Classification":
     st.header("🧠 Image Classification (CNN)")
@@ -137,9 +140,9 @@ elif menu == "Image Classification":
         confidence = np.max(prediction) * 100
 
         st.success("Classification complete!")
-        st.metric("Predicted Class", str(class_index))
-        st.metric("Confidence", f"{confidence:.2f}%")
-        st.metric("Inference Time", f"{inference_time:.2f} ms")
+        st.write(f"🎯 **Predicted Class:** {class_index}")
+        st.write(f"🔥 **Confidence:** {confidence:.2f}%")
+        st.write(f"⏱️ **Inference Time:** {inference_time:.2f} ms")
 
 else:
     st.info("👋 Welcome! Use the top menu to explore Image Detection or Classification features.")
