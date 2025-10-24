@@ -129,8 +129,8 @@ st.markdown("""
 # HOME PAGE
 # ==========================
 if menu == "Home":
-    st.markdown("## **WELCOME TO MY IMAGE DETECTION**🌙")
-    st.caption("### Welcome to Bulandari's image detection website! Choose the features that best suit your needs.")
+    st.markdown("# **WELCOME TO MY IMAGE DETECTION**🌙")
+    st.caption("#### Welcome to Bulandari's image detection website! Choose the features that best suit your needs.")
     st.markdown("<div class='black'>", unsafe_allow_html=True)
     st.markdown("#### **You can use this website to detect images by theme:**")
 
