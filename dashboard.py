@@ -43,7 +43,7 @@ st.markdown(
         font-size: 16px;
     }
     .stApp {
-        background-color: #feffef;
+        background-color: #fdfdf5;
     }
 
     /* Opsional: ubah warna teks agar kontras */
@@ -91,7 +91,7 @@ st.markdown(
 st.divider()
 
 # ==========================
-# Kartu Kategori (mini, rapi)
+# Kartu Kategori
 # ==========================
 col1, col2, col3, col4 = st.columns(4)
 
@@ -107,7 +107,7 @@ with col2:
     st.markdown("""
     <div class='category-card' style='background-color:#FFD6E0;'>
         <div class='cat-title'>Fashion</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png' />
     </div>
     """, unsafe_allow_html=True)
 
