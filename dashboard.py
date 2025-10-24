@@ -180,7 +180,7 @@ if menu == "Home":
     # How to use
     st.markdown("""
     <div class='howto'>
-      <h4>How to use this dashboard</h4>
+      <h4>Bagaimana cara menggunakan situs ini</h4>
       <ol>
         <li>Pilih menu di sidebar: <b>Image Detection</b> atau <b>Image Classification</b>.</li>
         <li>Upload gambar JPG/PNG di panel kiri, lalu klik tombol Run.</li>
