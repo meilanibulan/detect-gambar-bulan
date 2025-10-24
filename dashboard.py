@@ -42,64 +42,92 @@ with st.sidebar:
 # ==========================
 st.markdown("""
 <style>
+/* --- SIDEBAR --- */
 [data-testid="stSidebar"]{
   background: linear-gradient(180deg,#fff7ef 0%,#f6f0ff 100%) !important;
   border-right: 1px solid rgba(0,0,0,.06);
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  padding: 24px 16px !important;
 }
-.stApp { background: #fffbe8; }
+
+/* Jarak antar menu */
+[data-testid="stSidebar"] [data-testid="stRadio"] > div{
+  display: flex;
+  flex-direction: column;
+  gap: 14px !important;
+  margin-top: 12px !important;
+}
+
+/* Item aktif */
+[data-testid="stSidebar"] label[data-baseweb="radio"]:has(input:checked){
+  background: linear-gradient(90deg,#fdd1f7 0%, #f5e0ff 100%);
+  border-radius: 10px;
+  color: #000 !important;
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+/* Font item sidebar */
+[data-testid="stSidebar"] label{
+  font-size: 15px;
+  font-weight: 500;
+  color: #5a5a5a !important;
+}
+
+/* --- AREA UTAMA --- */
+.stApp {
+  background: #fffbe8;
+}
 .block-container{
   background: linear-gradient(145deg,#ffe9e9 0%,#efe7ff 50%,#e8fff3 100%);
   border-radius: 16px;
-  padding: 1.5rem 1.8rem;
+  margin-top: 30px !important;
+  padding: 3rem 4rem !important;         /* isi halaman lebih lebar */
+  width: 100% !important;                /* full layar */
+  max-width: 100% !important;
+  min-height: 100vh !important;          /* biar tinggi memenuhi layar */
+  box-sizing: border-box;
 }
+
+/* --- KARTU PUTIH (PANEL) --- */
 .panel-white{
   background:#fff; border:1px solid rgba(0,0,0,.06);
-  border-radius:16px; padding:18px; box-shadow:0 8px 26px rgba(0,0,0,.08);
+  border-radius:18px; padding:28px;
+  box-shadow:0 8px 26px rgba(0,0,0,.08);
+  margin-bottom: 32px !important;
 }
+
+/* --- KARTU KATEGORI --- */
 .category-card{
   background:#fff; border:1px solid rgba(0,0,0,.06);
-  border-radius:18px; padding:16px; text-align:center;
+  border-radius:22px; padding:24px; text-align:center;
   box-shadow:0 6px 16px rgba(0,0,0,.08);
   transition:transform .15s ease, box-shadow .15s ease;
+  height: 220px;                         /* biar kotaknya seragam dan isi seimbang */
 }
-.category-card:hover{ transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.12); }
-.cat-pill{
-  display:inline-block; padding:6px 14px; border-radius:18px;
-  background:#f3f3f7; border:1px solid rgba(0,0,0,.06); margin-bottom:10px; font-weight:700;
+.category-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
 }
-.cat-img{ width:100%; height:130px; object-fit:cover; border-radius:12px; }
+.cat-img{
+  width:100%; height:130px; object-fit:contain;
+  border-radius:12px; margin-top:12px;
+}
+
+/* --- BLOK HOW TO --- */
 .howto{
-  background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:12px;
-  padding:16px; box-shadow:0 6px 18px rgba(0,0,0,.06);
-}
-/* ---- SPACING TOKENS ---- */
-:root{
-  --sp-8: 8px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px;
-  --sp-24: 24px; --sp-28: 28px; --sp-32: 32px; --sp-40: 40px; --sp-48: 48px;
+  background:#fff; border:1px solid rgba(0,0,0,.06);
+  border-radius:14px; padding:24px;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
 }
 
-/* Lebarkan padding konten utama + batasi lebar agar tidak terlalu penuh */
-.block-container{
-  margin-top: 60px !important;                  /* biar header nggak ketutup toolbar */
-  padding: var(--sp-32) var(--sp-48) !important;/* jarak dalam halaman */
-  max-width: 1200px;                            /* biar nyaman dibaca */
-}
-
-/* Panel putih (kartu besar) lebih lega + ada jarak bawah */
-.panel-white{
-  padding: var(--sp-24) var(--sp-32) !important;
-  margin-bottom: var(--sp-32) !important;
-  border-radius: 18px;
-}
-
-/* Kartu kategori lebih lega */
-.category-card{
-  padding: var(--sp-24) !important;
-  border-radius: 20px;
-}
-
-/* Grid antar-kolom lebih renggang */
-[data-testid="stHorizontalBlock"]{ gap: var(--sp-28) !important; }
+/* --- GRID & SPACING --- */
+[data-testid="stHorizontalBlock"]{ gap: 28px !important; }
+.vspace-16{ height: 16px; }
+.vspace-24{ height: 24px; }
+.vspace-32{ height: 32px; }
 
 </style>
 """, unsafe_allow_html=True)
