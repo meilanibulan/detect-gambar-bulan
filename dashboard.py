@@ -29,175 +29,116 @@ if "logs" not in st.session_state:    st.session_state["logs"]   = []
 if "scores" not in st.session_state:  st.session_state["scores"] = []
 if "det_count" not in st.session_state: st.session_state["det_count"] = 0
 
-# =========================
-# THEME
-# =========================
-# THEME: Teal / Aqua Dashboard (replace the whole previous <style> block)
 st.markdown("""
 <style>
-div.stDownloadButton > button:first-child {
-    background-color: #4CAF50;
-    color: white;
-}
-div.stDownloadButton > button:first-child:hover {
-    background-color: #45a049;
-    color: white;
-}
-    
-/* ===== TOKENS (teal) ===== */
+/* =========================
+   THEME — BULAN DASHBOARD
+   ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
 :root{
-  --bg-1:#46494b;       
-  --bg-2:#0F2A1D;        /* panel dark */
-  --bg-3:#122430;        /* panel lighter */
-  --text:#FFFFFF;        /* primary text */
-  --muted:#FFFFFF;       /* secondary text */
-  --teal-1:#AEC3B0;      /* light aqua */
-  --teal-2:#64D2C4;      /* teal */
-  --teal-3:#1F9E8C;      /* deep teal */
-  --teal-4:#1F9E8C;      /* very deep teal */
-  --glass: rgba(255,255,255,.06);
+  --bg1:#0B121B;        /* background gradient start */
+  --bg2:#0F1824;        /* background gradient end   */
+  --panel:#0E3D41;      /* panel start               */
+  --panel2:#0F5C59;     /* panel end                 */
+  --accent:#30E3CA;     /* mint neon                 */
+  --accent-2:#19B9B0;   /* darker mint               */
+  --text:#EAFDFC;       /* main text                 */
+  --muted:#B9CDD3;      /* secondary text            */
+  --chip:rgba(255,255,255,0.10);
+  --glass:rgba(255,255,255,0.06);
+  --ring:rgba(48,227,202,0.55);
 }
 
-/* ===== GLOBAL ===== */
-html, body, [data-testid="stAppViewContainer"]{
-  background: radial-gradient(1200px 800px at 10% -10%, #112733 0%, var(--bg-1) 50%, #061018 100%) !important;
-  color: var(--text) !important;
-}
-h1,h2,h3,h4,h5,h6,p,span,div,label,small{ color: var(--text); }
-.muted{ color: var(--muted); }
-hr{ border-color: rgba(255,255,255,.08); }
-
-[data-testid="stHeader"], [data-testid="stToolbar"]{ background: transparent !important; box-shadow:none !important; }
-[data-testid="stSidebar"]{
-  background: linear-gradient(180deg, #081017 0%, #0C181F 100%) !important;
-  color: var(--text) !important;
+/* ===== Base ===== */
+html, body, [class^="stApp"] * { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+.stApp { 
+  background: radial-gradient(1200px 600px at 15% 0%, #0E1622 0%, transparent 60%) , linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-/* ===== NAV PILLS ===== */
-.navbar{ display:flex; gap:22px; padding:12px 0 14px 0; }
-.stButton > button{
-  background: linear-gradient(180deg, #101b24, #0f1a22) !important;
-  color: var(--text) !important;
-  border: 1px solid rgba(255,255,255,.08) !important;
-  border-radius: 14px !important;
-  padding: 8px 18px !important;
-  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 6px 18px rgba(0,0,0,.35);
-  opacity: 1 !important;
+/* ===== Headings & copy ===== */
+h1 { font-size: 3rem !important; letter-spacing: 1.2px; color: var(--text); text-shadow: 0 0 12px rgba(48,227,202,.35);}
+h2 { font-size: 1.65rem !important; color: var(--text);}
+h3, h4 { color: var(--text); }
+p, li, label, span, div { color: var(--muted); font-size: 1.05rem; }
+
+/* ===== Nav Tabs (st.tabs) ===== */
+.stTabs [data-baseweb="tab-list"] { gap: 12px; }
+.stTabs [data-baseweb="tab"] {
+  background: #0F1824; 
+  color: var(--text); 
+  border-radius: 999px; 
+  padding: 10px 18px; 
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
 }
-.stButton > button:hover{
-  border-color: rgba(100,210,196,.65) !important; color: var(--teal-1) !important;
-}
-.stButton > button:disabled{
-  background: linear-gradient(160deg, var(--teal-2) 0%, var(--teal-1) 70%) !important;
-  color:#0a1418 !important;
-  border: 1px solid var(--teal-2) !important;
-  box-shadow: 0 8px 24px rgba(31,158,140,.35) !important;
-  opacity: 1 !important;
+.stTabs [aria-selected="true"]{
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0B2C2D !important;
+  font-weight: 700;
+  box-shadow: 0 0 12px var(--ring);
 }
 
-/* ===== KPI CARDS (rename-safe: still .card--peach) ===== */
-.card--peach{
-  background: linear-gradient(135deg, rgba(31,158,140,.35) 0%, rgba(12,94,89,.35) 100%), 
-              linear-gradient(180deg, #0f1d26 0%, #122430 100%);
-  border: 1px solid rgba(100,210,196,.35);
-  border-radius: 18px;
-  padding: 18px 16px;
-  box-shadow:
-    0 10px 26px rgba(0,0,0,.45),
-    inset 0 1px 0 rgba(255,255,255,.05),
-    inset 0 0 40px rgba(31,158,140,.10);
-  backdrop-filter: blur(3px);
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+/* ===== KPI cards (gunakan st.container/card pembungkus) ===== */
+.bulan-card{
+  background: linear-gradient(145deg, var(--panel) 0%, var(--panel2) 100%);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 20px; 
+  padding: 22px; 
+  color: var(--text);
+  box-shadow: 0 10px 30px rgba(0,0,0,.30);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.card--peach:hover{
-  transform: translateY(-2px);
-  border-color: rgba(182,240,234,.75);
-  box-shadow:
-    0 14px 34px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.06),
-    inset 0 0 50px rgba(100,210,196,.18);
-}
-.card--peach h3{ margin:0; font-size:1rem; font-weight:800; color:#E8FAFF; }
-.card--peach .big{ font-size:1.6rem; font-weight:900; color:#FFFFFF; }
-.card--peach .pill{
-  display:inline-block; margin-top:6px; font-size:.78rem; padding:4px 10px; border-radius:10px;
-  background: rgba(182,240,234,.10); color:#DFF9F5; border:1px solid rgba(100,210,196,.35);
+.bulan-card:hover{ transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,0,0,.36); }
+.bulan-chip{
+  display:inline-block; margin-top:10px; padding:8px 14px; border-radius:12px;
+  background: var(--chip); color: var(--text); border:1px solid rgba(255,255,255,.12); 
+  backdrop-filter: blur(4px);
 }
 
-/* ===== PANELS (Upload/Result/Statistics) ===== */
-.panel{
-  background: linear-gradient(135deg, #0E3D41 0%, #0F5C59 100%);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+/* Metric (kalau pakai st.metric) */
+[data-testid="stMetric"]{
+  background: linear-gradient(145deg, var(--panel), var(--panel2));
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 20px; padding: 18px 20px; color: var(--text);
+  box-shadow: 0 10px 30px rgba(0,0,0,.30);
 }
-.panel h3{ margin:0 0 .6rem 0; font-size:1.02rem; font-weight:800; }
+[data-testid="stMetricValue"] { color: var(--text) !important; font-size: 2rem !important; font-weight: 800; }
+[data-testid="stMetricDelta"] { color: var(--accent) !important; }
 
-/* ===== IMAGE FRAME (teal glass) ===== */
-.gold-frame{
-  background: linear-gradient(140deg, rgba(182,240,234,.10), rgba(31,158,140,.10));
-  border: 1px solid rgba(100,210,196,.35);
-  border-radius: 16px; padding: 10px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.45), inset 0 0 12px rgba(182,240,234,.12);
-}
-.gold-frame img{ border-radius: 10px; }
-
-/* ===== TRANSACTIONS ===== */
-.txn{
-  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-  border: 1px solid rgba(100,210,196,.18);
-  border-radius: 12px; padding: 10px 12px;
+/* ===== Upload & Result panels ===== */
+.bulan-panel{
+  background: linear-gradient(145deg, var(--panel), var(--panel2));
+  border: 1px solid rgba(255,255,255,.10); border-radius: 18px;
+  padding: 24px; color: var(--text); box-shadow: 0 8px 24px rgba(0,0,0,.28);
 }
 
-/* ===== FIX: FILE NAME VISIBILITY ===== */
-[data-testid="stFileUploader"] div[role="listitem"] {
-  color: var(--text) !important;              /* warna teks jadi putih */
-  font-weight: 500 !important;
-  background: rgba(255,255,255,.04) !important;
-  border-radius: 10px !important;
-  padding: 6px 10px !important;
-  margin-top: 4px !important;
+/* File uploader dropzone */
+[data-testid="stFileUploaderDropzone"]{
+  border: 2px dashed var(--accent) !important;
+  background: var(--glass); color: var(--text) !important; border-radius: 14px;
 }
-[data-testid="stFileUploader"] div[role="listitem"] span {
-  color: var(--text) !important;
-  opacity: 0.9 !important;
-}
+[data-testid="stFileUploaderDropzone"] p{ color: var(--text) !important; }
 
-/* ===== FIX: FILE UPLOADER VISIBILITY ===== */
-[data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"]{
-  background: rgba(255,255,255,.04) !important;
-  border: 1.5px dashed rgba(100,210,196,.45) !important;
-  border-radius: 14px !important;
-  color: var(--text) !important;
+/* ===== Buttons ===== */
+.stButton>button, button[kind="secondary"]{
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color:#0B2C2D !important; font-weight:700; border:none; border-radius:12px; 
+  padding: 10px 16px; box-shadow: 0 8px 20px rgba(48,227,202,.25);
 }
-[data-testid="stFileUploader"] section[data-testid="stFileUploaderDropzone"]:hover{
-  background: rgba(100,210,196,.08) !important;
-  border-color: var(--teal-2) !important;
-  box-shadow: 0 0 12px rgba(100,210,196,.25);
-}
-[data-testid="stFileUploader"] label div{
-  color: var(--text) !important;
-  opacity: .9 !important;
-}
+.stButton>button:hover, button[kind="secondary"]:hover{ filter: brightness(1.08); box-shadow: 0 10px 26px rgba(48,227,202,.35); }
 
-/* Button “Browse files” */
-[data-testid="stFileUploader"] button{
-  background: linear-gradient(90deg, var(--teal-2), var(--teal-3)) !important;
-  color: #fff !important;
-  font-weight: 600 !important;
-  border: none !important;
-  border-radius: 8px !important;
-  padding: 6px 14px !important;
-  box-shadow: 0 4px 12px rgba(31,158,140,.35);
-  transition: all .2s ease-in-out;
-}
-[data-testid="stFileUploader"] button:hover{
-  background: linear-gradient(90deg, var(--teal-1), var(--teal-2)) !important;
-  color: #0A1418 !important;
-  box-shadow: 0 6px 18px rgba(182,240,234,.35);
-}
+/* ===== Links & small accents ===== */
+a { color: var(--accent); font-weight:600; text-decoration:none; }
+a:hover { text-decoration: underline; }
 
+/* ===== Section dividers ===== */
+hr { border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent); }
+
+/* ===== Responsive tweaks ===== */
+@media (max-width: 900px){
+  h1{ font-size: 2.2rem !important; }
+  [data-testid="stMetricValue"]{ font-size: 1.6rem !important; }
+}
 </style>
 """, unsafe_allow_html=True)
 
