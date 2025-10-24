@@ -91,14 +91,6 @@ st.markdown("""
   box-sizing: border-box;
 }
 
-/* --- KARTU PUTIH (PANEL) --- */
-.panel-white{
-  background:#fff; border:1px solid rgba(0,0,0,.06);
-  border-radius:18px; padding:28px;
-  box-shadow:0 8px 26px rgba(0,0,0,.08);
-  margin-bottom: 32px !important;
-}
-
 /* --- KARTU KATEGORI --- */
 .category-card{
   background:#fff; border:1px solid rgba(0,0,0,.06);
