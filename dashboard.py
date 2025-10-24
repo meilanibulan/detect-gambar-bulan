@@ -388,28 +388,28 @@ elif menu == "Statistics":
             st.write("Log kosong.")
 
 elif menu == "About":
-    st.header("🌙 Tentang Dashboard Ini")
+    st.header("### 🌙 About This Dashboard")
     st.write("""
     **Bulan Image Detection Dashboard** was developed as a learning tool and demonstration tool for the application 
     of Artificial Intelligence (AI) technology in the field of Computer Vision.
     This dashboard allows users to perform object detection and image classification in an interactive and easy-to-use manner.
     """)
 
-    st.markdown("### 🎯 Tujuan Pengembangan")
+    st.markdown("### 🎯 Development Goals")
     st.write("""
     This dashboard aims to provide an overview of how deep learning models recognize visual patterns in 
     images and to help students and general users understand the basic concepts of 
     **Object Detection** and **Image Classification**.
     """)
 
-    st.markdown("### ⚙️ Fitur Utama")
+    st.markdown("### ⚙️ Key Features")
     st.write("""
     - **Image Detection** – Detecting objects in images using the YOLO model.  
     - **Image Classification** – Grouping images into four categories: *Animal, Fashion, Food,* and *Nature.*  
     - **Statistics** –Displays detection/classification results and performance during the running session.
     """)
 
-    st.markdown("### 👩‍💻 Pemilik")
+    st.markdown("### 👩‍💻 Owner")
     st.write("""
     This dashboard was created by **Meilani Bulandari Hasibuan**, a Statistics student at Syiah Kuala University in 2023.
     """)
