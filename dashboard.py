@@ -110,6 +110,8 @@ st.write(
 # ==========================
 # ROUTING BERDASARKAN MENU
 # ==========================
+menu = st.radio("Select Mode:", ["Home", "Image Detection", "Image Classification"], horizontal=True)
+
 if menu == "Home":
     # ==========================
     # Kartu Kategori
