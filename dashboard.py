@@ -18,6 +18,8 @@ st.set_page_config(page_title="Bulan Dashboard", page_icon="🌝", layout="wide"
 LABELS   = ['animal', 'fashion', 'food', 'nature']
 YOLO_PATH = "model/Meilani Bulandari Hsb_Laporan 4.pt"
 CLF_PATH  = "model/Meilani Bulandari Hsb_Laporan 2.h5"
+classifier = None
+yolo_model = None
 
 # State init
 if "page" not in st.session_state:    st.session_state["page"]  = "Home"
@@ -315,7 +317,7 @@ elif page == "Image Detection":
                 ms = (time.time() - t0) * 1000
                 plotted = res[0].plot()  # numpy (BGR)
 
-                st.markdown("<div class='aqua-frame'>", unsafe_allow_html=True)
+                st.markdown("<div class='gold-frame'>", unsafe_allow_html=True)
                 st.image(plotted[..., ::-1], caption="Detection", use_container_width=True)  # BGR -> RGB
                 st.markdown("</div>", unsafe_allow_html=True)
 
