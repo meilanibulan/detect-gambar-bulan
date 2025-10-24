@@ -388,7 +388,7 @@ elif menu == "Statistics":
             st.write("Log kosong.")
 
 elif menu == "About":
-    st.header("### 🌙 About This Dashboard")
+    st.markdown("### 🌙 About This Dashboard")
     st.write("""
     **Bulan Image Detection Dashboard** was developed as a learning tool and demonstration tool for the application 
     of Artificial Intelligence (AI) technology in the field of Computer Vision.
