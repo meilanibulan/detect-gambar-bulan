@@ -133,7 +133,7 @@ st.markdown("""
 # HOME PAGE
 # ==========================
 if menu == "Home":
-    st.markdown("# **WELCOME TO IMAGE DETECTION WEBSITE**🫧")
+    st.markdown("# **WELCOME TO IMAGE DETECTION WEBSITE**🎀")
     st.caption("#### Welcome to Bulandari's image detection website! Choose the features that best suit your needs.")
     st.markdown("<div class='black'>", unsafe_allow_html=True)
     st.markdown("#### **You can use this website to detect images by theme:**")
@@ -185,7 +185,7 @@ if menu == "Home":
         <li>Pilih menu di sidebar: <b>Image Detection</b> atau <b>Image Classification</b>.</li>
         <li>Upload gambar JPG/PNG di panel kiri, lalu klik tombol Run.</li>
         <li>Hasil akan muncul di panel kanan (gambar anotasi / label & confidence).</li>
-        <li>Lihat <b>Statistics</b> untuk ringkas jumlah run sesi ini, dan <b>Dataset</b> / <b>About</b> untuk info tambahan.</li>
+        <li>Lihat <b>Statistics</b> untuk ringkas jumlah run sesi ini, dan <b>About</b> untuk info tambahan.</li>
       </ol>
     </div>
     """, unsafe_allow_html=True)
