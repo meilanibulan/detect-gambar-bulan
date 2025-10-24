@@ -215,6 +215,8 @@ def load_models():
         st.warning(f"Classifier gagal dimuat: {e}")
     return yolo, clf
 
+yolo_model, classifier = load_models()
+
 # =========================
 # NAVBAR
 # =========================
