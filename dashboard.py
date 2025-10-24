@@ -210,10 +210,16 @@ def load_models():
     except Exception as e:
         st.warning(f"YOLO model gagal dimuat: {e}")
     try:
-        clf = tf.keras.models.load_model(CLF_PATH, compile=False)
+        if not Path(CLF_PATH).exists():
+            st.warning(f"File CNN (.h5) tidak ditemukan: {CLF_PATH}")
+        else:
+            if not _is_hdf5(CLF_PATH):
+                raise ValueError("File ini bukan HDF5 valid (header tidak \x89HDF). Periksa apakah file korup / pointer LFS / salah format.")
+            clf = tf.keras.models.load_model(CLF_PATH, compile=False, safe_mode=False)
+            st.success("Model CNN Classifier berhasil dimuat.")
     except Exception as e:
-        st.warning(f"Classifier gagal dimuat: {e}")
-    return yolo, clf
+        st.error(f"Gagal memuat CNN Classifier: {e}")
+ return yolo, clf
 
 yolo_model, classifier = load_models()
 
