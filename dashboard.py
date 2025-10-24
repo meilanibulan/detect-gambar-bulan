@@ -10,7 +10,7 @@ import cv2
 # ==========================
 # PAGE CONFIG
 # ==========================
-st.set_page_config(page_title="Bulan Image Detection Dashboard 🌙", layout="wide")
+st.set_page_config(page_title="✨ Bulan Image Detection Dashboard", layout="wide")
 
 # ==========================
 # LOAD MODELS (cached)
@@ -59,36 +59,22 @@ st.markdown("""
   background:#fff; border:1px solid rgba(0,0,0,.06);
   border-radius:16px; padding:18px; box-shadow:0 8px 26px rgba(0,0,0,.08);
 }
-h1, h2, h3, h4, h5, h6, p {
-    color: #2c2c2c;
-    }
-    .category-card {
-        border-radius: 20px;
-        padding: 15px;
-        text-align: center;
-        color: black;
-        font-weight: 600;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-    }
-    .cat-title {
-        font-size: 16px;
-        background-color: #eee;
-        border-radius: 20px;
-        padding: 3px 15px;
-        display: inline-block;
-        margin-bottom: 8px;
-    }
-    .cat-img {
-        border-radius: 15px;
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-    }
+.category-card{
+  background:#fff; border:1px solid rgba(0,0,0,.06);
+  border-radius:18px; padding:16px; text-align:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.category-card:hover{ transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.12); }
+.cat-pill{
+  display:inline-block; padding:6px 14px; border-radius:18px;
+  background:#f3f3f7; border:1px solid rgba(0,0,0,.06); margin-bottom:10px; font-weight:700;
+}
+.cat-img{ width:100%; height:130px; object-fit:cover; border-radius:12px; }
+.howto{
+  background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:12px;
+  padding:16px; box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -106,21 +92,37 @@ if menu == "Home":
     row2_col1, row2_col2 = st.columns(2, gap="large")
 
     with row1_col1:
-        st.markdown("<div class='cat-pill'>Animal</div>", unsafe_allow_html=True)
-        st.markdown("<div class='category-card'><img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png'/></div>", unsafe_allow_html=True)
+         st.markdown("""
+        <div class='category-card' style='background-color:#EDE2FF;'>
+            <div class='cat-title'>Animal</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
+        </div>
+        """, unsafe_allow_html=True)
 
     with row1_col2:
-        st.markdown("<div class='cat-pill'>Fashion</div>", unsafe_allow_html=True)
-        st.markdown("<div class='category-card'><img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png'/></div>", unsafe_allow_html=True)
-
+         st.markdown("""
+        <div class='category-card' style='background-color:#FFD6E0;'>
+            <div class='cat-title'>Fashion</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/2258/2258432.png' />
+        </div>
+        """, unsafe_allow_html=True)
+        
     with row2_col1:
-        st.markdown("<div class='cat-pill'>Food</div>", unsafe_allow_html=True)
-        st.markdown("<div class='category-card'><img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png'/></div>", unsafe_allow_html=True)
-
+        st.markdown("""
+        <div class='category-card' style='background-color:#FFF4CC;'>
+            <div class='cat-title'>Food</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png' />
+        </div>
+        """, unsafe_allow_html=True)
+        
     with row2_col2:
-        st.markdown("<div class='cat-pill'>Nature</div>", unsafe_allow_html=True)
-        st.markdown("<div class='category-card'><img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png'/></div>", unsafe_allow_html=True)
-
+        st.markdown("""
+        <div class='category-card' style='background-color:#D9FCE3;'>
+            <div class='cat-title'>Nature</div>
+            <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png' />
+        </div>
+        """, unsafe_allow_html=True)
+        
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -199,34 +201,34 @@ elif menu == "Statistics":
     st.info("Here you can display detection/classification run stats per session.")
 
 elif menu == "About":
-    st.header("🌙 About This Dashboard")
+    st.header("🌙 Tentang Dashboard Ini")
     st.write("""
-    The **Bulan Image Detection Dashboard** was created to make image recognition tasks
-    simple and accessible for everyone.  
-    Using advanced computer vision models, this app can automatically detect and classify
-    images into four main categories: **Animal**, **Fashion**, **Food**, and **Nature**.
+    **Bulan Image Detection Dashboard** dikembangkan sebagai media pembelajaran dan demonstrasi
+    penerapan teknologi **Kecerdasan Buatan (AI)** di bidang **Computer Vision**.
+    Melalui dashboard ini, pengguna dapat melakukan deteksi objek dan klasifikasi gambar
+    secara interaktif dan mudah digunakan.
     """)
 
-    st.markdown("### 💡 Purpose")
+    st.markdown("### 🎯 Tujuan Pengembangan")
     st.write("""
-    This dashboard was designed for educational and demonstration purposes — to help users
-    understand how artificial intelligence can recognize visual patterns from everyday images.
+    Dashboard ini bertujuan untuk memberikan gambaran bagaimana model deep learning
+    mampu mengenali pola visual dari gambar, serta membantu mahasiswa dan pengguna umum
+    memahami konsep dasar **deteksi objek (Object Detection)** dan **klasifikasi gambar (Image Classification)**.
     """)
 
-    st.markdown("### ⚙️ Key Features")
+    st.markdown("### ⚙️ Fitur Utama")
     st.write("""
-    - **Image Detection** — Identifies objects within an uploaded image.  
-    - **Image Classification** — Predicts which of the four categories the image belongs to.  
-    - **Statistics** — Displays detection and classification performance for the current session.  
-    - **Dataset** — Provides space for adding or testing your own images.
+    - **Image Detection** – Mendeteksi objek yang terdapat di dalam gambar menggunakan model YOLO.  
+    - **Image Classification** – Mengelompokkan gambar ke dalam empat kategori: *Animal, Fashion, Food,* dan *Nature.*  
+    - **Statistics** – Menampilkan hasil dan performa deteksi/klasifikasi selama sesi berjalan.  
+    - **Dataset** – Menyediakan ruang untuk menambah atau menguji gambar secara mandiri.
     """)
 
-    st.markdown("### 👩‍💻 Developer Note")
+    st.markdown("### 👩‍💻 Pengembang")
     st.write("""
-    This project was developed by **Bulandari** as part of an academic initiative in computer vision
-    and data science. It integrates interactive visualization and AI models into one streamlined app
-    built with **Streamlit**.
+    Dashboard ini dibuat oleh **Bulandari** sebagai bagian dari proyek akademik di bidang
+    **Data Science** dan **Computer Vision**, menggunakan framework **Streamlit** untuk antarmuka interaktif.
     """)
 
     st.markdown("---")
-    st.caption("© 2025 Bulandari – All rights reserved. Educational use only.")
+    st.caption("© 2025 Bulandari – Untuk tujuan edukasi dan penelitian.")
