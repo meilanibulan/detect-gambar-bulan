@@ -46,8 +46,6 @@ st.markdown(
     .stApp {
         background-color: #fdfdf5;
     }
-
-    /* Opsional: ubah warna teks agar kontras */
     h1, h2, h3, h4, h5, h6, p {
         color: #2c2c2c;
     }
@@ -77,6 +75,25 @@ st.markdown(
         width: 100%;
         height: 120px;
         object-fit: cover;
+    }
+
+    /* Tambahanmu yang tadi */
+    .block-container { 
+        background-color: #FFFBEA;
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+    .stButton>button {
+        background-color: #E0BBE4;
+        color: black;
+        border-radius: 10px;
+        border: none;
+        padding: 0.5rem 1.2rem;
+        font-weight: 600;
+    }
+    .stButton>button:hover {
+        background-color: #D291BC;
+        color: white;
     }
     </style>
     """,
@@ -229,29 +246,6 @@ elif menu == "Image Classification":
             st.write(f"🎯 **Predicted Class:** {predicted_label}")
             st.write(f"🔥 **Confidence:** {confidence:.2f}%")
             st.write(f"⏱️ **Inference Time:** {inference_time:.2f} ms")
-
-    # styling halus untuk background
-    st.markdown("""
-    <style>
-    .block-container {
-        background-color: #FFFBEA;
-        padding: 2rem;
-        border-radius: 1rem;
-    }
-    .stButton>button {
-        background-color: #E0BBE4;
-        color: black;
-        border-radius: 10px;
-        border: none;
-        padding: 0.5rem 1.2rem;
-        font-weight: 600;
-    }
-    .stButton>button:hover {
-        background-color: #D291BC;
-        color: white;
-    }
-    </style>
-    """, unsafe_allow_html=True)
 
 else:
     st.info("👋 Welcome! Use the top menu to explore Image Detection or Classification features.")
