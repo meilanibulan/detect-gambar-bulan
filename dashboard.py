@@ -30,7 +30,7 @@ with st.sidebar:
     st.markdown("### Features That\nCan Be Used")
     menu = st.radio(
         "Navigation",
-        ["Home", "Image Detection", "Image Classification", "Statistics", "Dataset", "About"],
+        ["Home", "Image Detection", "Image Classification", "Statistics", "About"],
         index=0,
         label_visibility="collapsed"
     )
@@ -100,11 +100,6 @@ st.markdown("""
 
 /* Grid antar-kolom lebih renggang */
 [data-testid="stHorizontalBlock"]{ gap: var(--sp-28) !important; }
-
-/* Spasi antar-bagian utilitas */
-.vspace-16{ height: 16px; }
-.vspace-24{ height: 24px; }
-.vspace-32{ height: 32px; }
 
 </style>
 """, unsafe_allow_html=True)
