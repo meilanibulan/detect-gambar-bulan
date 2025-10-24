@@ -46,12 +46,12 @@ div.stDownloadButton > button:first-child:hover {
     
 /* ===== TOKENS (teal) ===== */
 :root{
-  --bg-1E3EED4;        /* base navy-dark */
-  --bg-2:#0F1C25;        /* panel dark */
+  --bg-1:#E3EED4;        /* base navy-dark */
+  --bg-2:#0F2A1D;        /* panel dark */
   --bg-3:#122430;        /* panel lighter */
-  --text:#E9F3F7;        /* primary text */
-  --muted:#9FB3BF;       /* secondary text */
-  --teal-1:#B6F0EA;      /* light aqua */
+  --text:#375534;        /* primary text */
+  --muted:#6B9071;       /* secondary text */
+  --teal-1:#AEC3B0;      /* light aqua */
   --teal-2:#64D2C4;      /* teal */
   --teal-3:#1F9E8C;      /* deep teal */
   --teal-4:#0C5E59;      /* very deep teal */
