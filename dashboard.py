@@ -13,7 +13,7 @@ from tensorflow.keras.preprocessing import image as keras_image
 # =========================
 # CONFIG
 # =========================
-st.set_page_config(page_title="Bulan Dashboard", page_icon="🌙", layout="wide")
+st.set_page_config(page_title="Bulan Dashboard", page_icon="🌝", layout="wide")
 
 LABELS   = ['animal', 'fashion', 'food', 'nature']
 YOLO_PATH = "model/Meilani Bulandari Hsb_Laporan 4.pt"
@@ -30,7 +30,7 @@ if "scores" not in st.session_state:  st.session_state["scores"] = []
 if "det_count" not in st.session_state: st.session_state["det_count"] = 0
 
 # =========================
-# THEME (Neo dark navy + peach/gold)
+# THEME
 # =========================
 # THEME: Teal / Aqua Dashboard (replace the whole previous <style> block)
 st.markdown("""
@@ -46,11 +46,11 @@ div.stDownloadButton > button:first-child:hover {
     
 /* ===== TOKENS (teal) ===== */
 :root{
-  --bg-1:#E3EED4;        /* base navy-dark */
+  --bg-1:#CEECE3;        /* base navy-dark */
   --bg-2:#0F2A1D;        /* panel dark */
   --bg-3:#122430;        /* panel lighter */
-  --text:#375534;        /* primary text */
-  --muted:#6B9071;       /* secondary text */
+  --text:#05808C;        /* primary text */
+  --muted:#05808C;       /* secondary text */
   --teal-1:#AEC3B0;      /* light aqua */
   --teal-2:#64D2C4;      /* teal */
   --teal-3:#1F9E8C;      /* deep teal */
