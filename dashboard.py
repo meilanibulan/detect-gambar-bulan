@@ -36,20 +36,38 @@ st.markdown(
         font-size: 40px;
         font-weight: 700;
         color: white;
+        text-align: left;
     }
     .subtext {
-        color: #C5C5C5;
+        color: black;
         font-size: 16px;
     }
-    .emoji-card {
-        background-color: rgba(255,255,255,0.05);
-        padding: 25px;
+    .category-card {
         border-radius: 20px;
+        padding: 15px;
         text-align: center;
-        font-size: 22px;
-        color: white;
+        color: black;
         font-weight: 600;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+    .cat-title {
+        font-size: 16px;
+        background-color: #eee;
+        border-radius: 20px;
+        padding: 3px 15px;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+    .cat-img {
+        border-radius: 15px;
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
     }
     </style>
     """,
@@ -65,34 +83,43 @@ st.markdown(
 st.divider()
 
 # ==========================
-# Kategori Cards (emoji)
+# Kartu Kategori (mini, rapi)
 # ==========================
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.markdown("<div class='emoji-card'>🐶 Animal</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='category-card' style='background-color:#EDE2FF;'>
+        <div class='cat-title'>Animal</div>
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/616/616408.png' />
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.markdown("<div class='emoji-card'>👗 Fashion</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='category-card' style='background-color:#FFD6E0;'>
+        <div class='cat-title'>Fashion</div>
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5579/5579417.png' />
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.markdown("<div class='emoji-card'>🍔 Food</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='category-card' style='background-color:#FFF4CC;'>
+        <div class='cat-title'>Food</div>
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/857/857681.png' />
+    </div>
+    """, unsafe_allow_html=True)
 
 with col4:
-    st.markdown("<div class='emoji-card'>🌿 Nature</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='category-card' style='background-color:#D9FCE3;'>
+        <div class='cat-title'>Nature</div>
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/3534/3534069.png' />
+    </div>
+    """, unsafe_allow_html=True)
 
 st.caption("Each category represents a classification target available in this app.")
-
-# ==========================
-# Quick Actions
-# ==========================
-st.subheader("Quick Actions")
-st.markdown("""
-- Go to **Image Detection** to draw bounding boxes with YOLO.  
-- Go to **Image Classification** to predict one of the four classes.  
-- See **Statistics** for session metrics, chart, and logs.  
-- Check **About Model** and **How It Works** for documentation.  
-""")
 
 st.divider()
 
@@ -118,7 +145,7 @@ if menu == "Image Detection":
         st.write(f"⏱️ Inference Time: **{inference_time:.2f} ms**")
 
 elif menu == "Image Classification":
-    st.header("🧠 Image Classification (CNN)")
+    st.header("🖼️ Image Classification (CNN)")
     uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
 
     if uploaded_file:
