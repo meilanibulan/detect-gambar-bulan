@@ -53,7 +53,7 @@ st.markdown("""
 <style>
 /* --- SIDEBAR --- */
 [data-testid="stSidebar"]{
-  background: linear-gradient(#c5429c 73%, #b2ba15 17%) !important;
+  background: #a9def9!important;
   border-right: 1px solid rgba(0,0,0,.06);
   width: 220px !important;
   min-width: 220px !important;
