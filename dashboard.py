@@ -132,7 +132,7 @@ hr{ border-color: rgba(255,255,255,.08); }
   padding: 16px;
   box-shadow: 0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
 }
-.panel h3{ margin:0 0 .6rem 0; font-size:5rem; font-weight:800; }
+.panel h3{ margin:0 0 .6rem 0; font-size:2rem; font-weight:800; }
 
 /* ===== IMAGE FRAME (teal glass) ===== */
 .gold-frame{
