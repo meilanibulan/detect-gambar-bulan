@@ -5,6 +5,7 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
 import time
+import cv2
 
 # ==========================
 # Konfigurasi Halaman
