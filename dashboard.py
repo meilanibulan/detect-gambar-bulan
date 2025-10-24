@@ -42,6 +42,14 @@ st.markdown(
         color: black;
         font-size: 16px;
     }
+    .stApp {
+        background-color: #feffef;
+    }
+
+    /* Opsional: ubah warna teks agar kontras */
+    h1, h2, h3, h4, h5, h6, p {
+        color: #2c2c2c;
+    }
     .category-card {
         border-radius: 20px;
         padding: 15px;
@@ -66,7 +74,7 @@ st.markdown(
     .cat-img {
         border-radius: 15px;
         width: 100%;
-        height: 130px;
+        height: 120px;
         object-fit: cover;
     }
     </style>
@@ -91,7 +99,7 @@ with col1:
     st.markdown("""
     <div class='category-card' style='background-color:#EDE2FF;'>
         <div class='cat-title'>Animal</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/616/616408.png' />
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
     </div>
     """, unsafe_allow_html=True)
 
@@ -99,7 +107,7 @@ with col2:
     st.markdown("""
     <div class='category-card' style='background-color:#FFD6E0;'>
         <div class='cat-title'>Fashion</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5579/5579417.png' />
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/5824/5824024.png' />
     </div>
     """, unsafe_allow_html=True)
 
@@ -107,7 +115,7 @@ with col3:
     st.markdown("""
     <div class='category-card' style='background-color:#FFF4CC;'>
         <div class='cat-title'>Food</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/857/857681.png' />
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/6774/6774898.png' />
     </div>
     """, unsafe_allow_html=True)
 
@@ -115,7 +123,7 @@ with col4:
     st.markdown("""
     <div class='category-card' style='background-color:#D9FCE3;'>
         <div class='cat-title'>Nature</div>
-        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/3534/3534069.png' />
+        <img class='cat-img' src='https://cdn-icons-png.flaticon.com/512/4447/4447748.png' />
     </div>
     """, unsafe_allow_html=True)
 
